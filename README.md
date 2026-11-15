@@ -1,11 +1,11 @@
-# PROJECT M²: FRONTIER — MISSION ACADEMY
+# PROJECT: M-STRONAUT
 ### *Interactive Space Mission Architecture, Planetary Science & Engineering Trade-Off Simulator*
 
 **NASA Space Apps Challenge Submission**  
 **Track:** Interactive Educational Technology & Deep Space Mission Planning  
-**Team / Project Title:** Project M² (Moon & Mars: Frontier Mission Academy)  
+**Team Name:** M²  
 **Live Application URL:** https://spaceapps-frontier-mission-academy.web.app *(or your deployed public URL)*  
-**Public Code Repository:** https://github.com/spaceapps-team/frontier-mission-academy *(or your public repo URL)*  
+**Public Code Repository:** https://github.com/MadihaDar/m-stronaut 
 **Demo Presentation / Video:** https://www.spaceappschallenge.org *(Public 30s Video or 7-Slide Presentation)*  
 
 ---
