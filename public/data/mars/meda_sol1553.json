@@ -1,0 +1,105 @@
+{
+  "dataset": "Mars Environmental Dynamics Analyzer (MEDA)",
+  "roverMission": "NASA Mars 2020 Perseverance Rover (Jezero Crater)",
+  "observationSol": 1553,
+  "observationDateUtc": "2 July 2025 21:03 UTC to 3 July 2025 21:43 UTC",
+  "verifiedSummary": {
+    "medianSurfacePressurePa": 639.0,
+    "medianAirTempK": 215.87,
+    "medianGroundTempK": 218.55,
+    "maxAirTempC": -24.3,
+    "minAirTempC": -83.1,
+    "diurnalPressureCyclePa": "628 Pa (afternoon low) to 655 Pa (pre-dawn high)"
+  },
+  "diurnalSamples": [
+    {
+      "lmst": "01:00",
+      "air_temp_k": 196.2,
+      "ground_temp_k": 190.5,
+      "pressure_pa": 652.1,
+      "flux_ir": 28.5
+    },
+    {
+      "lmst": "04:00",
+      "air_temp_k": 190.1,
+      "ground_temp_k": 184.2,
+      "pressure_pa": 648.3,
+      "flux_ir": 24.1
+    },
+    {
+      "lmst": "07:00",
+      "air_temp_k": 204.5,
+      "ground_temp_k": 210.8,
+      "pressure_pa": 642.0,
+      "flux_ir": 55.4
+    },
+    {
+      "lmst": "10:00",
+      "air_temp_k": 232.0,
+      "ground_temp_k": 252.4,
+      "pressure_pa": 634.8,
+      "flux_ir": 142.0
+    },
+    {
+      "lmst": "13:00",
+      "air_temp_k": 248.8,
+      "ground_temp_k": 268.1,
+      "pressure_pa": 628.5,
+      "flux_ir": 185.3
+    },
+    {
+      "lmst": "16:00",
+      "air_temp_k": 236.4,
+      "ground_temp_k": 240.2,
+      "pressure_pa": 632.1,
+      "flux_ir": 110.2
+    },
+    {
+      "lmst": "19:00",
+      "air_temp_k": 211.0,
+      "ground_temp_k": 202.6,
+      "pressure_pa": 641.5,
+      "flux_ir": 42.0
+    },
+    {
+      "lmst": "22:00",
+      "air_temp_k": 201.2,
+      "ground_temp_k": 194.8,
+      "pressure_pa": 649.8,
+      "flux_ir": 31.2
+    }
+  ],
+  "productsInArchive": [
+    {
+      "product": "CAL_ATS",
+      "rows": 48501,
+      "desc": "Atmospheric Temperature Sensor (mast mast heights 1-5)"
+    },
+    {
+      "product": "CAL_ENG",
+      "rows": 48507,
+      "desc": "Engineering and ICU thermal monitoring"
+    },
+    {
+      "product": "CAL_PS",
+      "rows": 48071,
+      "desc": "Barocap Atmospheric Pressure Sensor"
+    },
+    {
+      "product": "CAL_RDS",
+      "rows": 48078,
+      "desc": "Radiation and Dust Sensor discrete optical photodiodes"
+    },
+    {
+      "product": "CAL_RHS",
+      "rows": 28218,
+      "desc": "Relative Humidity Sensor"
+    },
+    {
+      "product": "CAL_TIRS",
+      "rows": 48500,
+      "desc": "Thermal Infrared Sensor (Downward/Upward IR and Ground Temp)"
+    }
+  ],
+  "mandatoryIntegrityRule": "MEDA data is a historical rover dataset from Sol 1553 in Jezero. It is NOT live weather at the fictional human base. RDS optical signals measure solar dust attenuation, NOT astronaut ionizing radiation dose."
+}

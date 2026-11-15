@@ -1,0 +1,48 @@
+{
+  "instrument": "LRO Lunar Exploration Neutron Detector (LEND) RDR RSCI",
+  "date": "2026-06-14",
+  "provenance_note": "MANDATORY RULE: LEND measures neutron flux (counts/sec), not water ice directly. Epithermal neutron suppression is a proxy for hydrogen enrichment. Not confirmed water. Radiation dose cannot be derived from LEND.",
+  "reference_counts": {
+    "dry_regolith_baseline": 18.5,
+    "unit": "epithermal counts / sec",
+    "collimated_sensor": "STN 1-4"
+  },
+  "orbit_observations": [
+    {
+      "id": "LEND_RDR_01",
+      "lat": -89.52,
+      "lon": 120.4,
+      "counts_per_sec": 13.8,
+      "reference_comparison": "-25.4% (Suppression)",
+      "interpretation": "Consistent with hydrogen enrichment / possible volatile concentration in cold trap",
+      "confidence": "Model-derived hypothesis"
+    },
+    {
+      "id": "LEND_RDR_02",
+      "lat": -88.12,
+      "lon": 45.2,
+      "counts_per_sec": 14.1,
+      "reference_comparison": "-23.8% (Suppression)",
+      "interpretation": "Shoemaker Crater rim: suppressed neutron flux relative to dry lunar highlands",
+      "confidence": "Model-derived hypothesis"
+    },
+    {
+      "id": "LEND_RDR_03",
+      "lat": -86.3,
+      "lon": 180.0,
+      "counts_per_sec": 18.2,
+      "reference_comparison": "-1.6% (Normal)",
+      "interpretation": "Illuminated ridge: nominal dry regolith baseline, zero hydrogen suppression",
+      "confidence": "Direct measurement baseline"
+    },
+    {
+      "id": "LEND_RDR_04",
+      "lat": -85.4,
+      "lon": 53.1,
+      "counts_per_sec": 15.6,
+      "reference_comparison": "-15.7% (Moderate suppression)",
+      "interpretation": "Nobile region: moderate hydrogen signature near shadowed crater wall",
+      "confidence": "Model-derived hypothesis"
+    }
+  ]
+}

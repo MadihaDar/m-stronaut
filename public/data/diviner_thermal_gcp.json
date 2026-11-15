@@ -1,0 +1,22 @@
+{
+  "dataset": "Diviner GCP (Global Cumulative-Average Thermal Tables)",
+  "product": "global_cumul_avg_cyl_20n30n_002.tab",
+  "coverage": "20\u00b0N to 30\u00b0N, -180\u00b0 to +180\u00b0 (Mission 02 Thermal Frontier)",
+  "spatialBin": "0.5\u00b0 latitude & longitude",
+  "localTimeBin": "0.25 hours (15 min)",
+  "parameter": "Calibrated brightness temperatures (t3-t9) and bolometric temperature (tbol)",
+  "unit": "Kelvin (K)",
+  "missingConstants": [
+    -9999,
+    -9998
+  ],
+  "observationPeriod": "5 July 2009 to 1 April 2015",
+  "diurnalCurve": [],
+  "sampleRows": [],
+  "deltaT_noon_midnight": {
+    "t_noon_kelvin": 382.4,
+    "t_midnight_kelvin": 96.8,
+    "delta_kelvin": 285.6,
+    "explanation": "Brutal thermal amplitude of ~285 K (+109\u00b0C to -176\u00b0C) between lunar midday and lunar night."
+  }
+}

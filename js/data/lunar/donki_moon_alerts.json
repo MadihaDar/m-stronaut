@@ -1,0 +1,35 @@
+{
+  "source": "NASA CCMC Space Weather Database Of Notifications, Knowledge, Information (DONKI)",
+  "disclaimer": "DONKI records provide real flare and CME physical parameters. Radiation dose cannot be derived from these records alone without particle dosimetry models.",
+  "training_events": [
+    {
+      "event_id": "2026-10-19T08:54:00-FLR-001",
+      "class": "M1.6",
+      "source_location": "S15W48",
+      "begin_time": "2026-10-19T08:54Z",
+      "peak_time": "2026-10-19T09:03Z",
+      "linked_cme": "2026-10-19T09:36:00-CME-001 (Speed: 520 km/s)",
+      "hazard_level": "ELEVATED SOLAR PARTICLE EVENT RISK",
+      "mission_choices": [
+        {
+          "action": "Secure Equipment & Seek In-Habitat Regolith Shelter",
+          "cost": "10% Base Power diverted to active magnetic storm shielding",
+          "outcome": "Optimal Crew Safety. Dose rates remain within ALARA standards (+0.10 Teamwork, +0.30 Safety).",
+          "score_delta": 1.0
+        },
+        {
+          "action": "Shelter Inside Rover Cabin",
+          "cost": "0% Base Power, 5% Rover Battery standby",
+          "outcome": "Adequate shielding, crew absorbs minor permissible dose (+0.25 Safety).",
+          "score_delta": 0.8
+        },
+        {
+          "action": "Continue Unprotected Surface EVA to finish drilling",
+          "cost": "0% Power",
+          "outcome": "SAFETY GATE VIOLATION. Radiation exposure exceeds acceptable EVA thresholds. Mission penalty applied.",
+          "score_delta": 0.0
+        }
+      ]
+    }
+  ]
+}

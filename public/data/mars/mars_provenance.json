@@ -1,0 +1,62 @@
+{
+  "swim": {
+    "datasetName": "Subsurface Water Ice Mapping (SWIM)",
+    "productName": "SWIM4MIM_Ci_0_1.tif / SWIM4MIM_Ci_1_5.tif / SWIM4MIM_Ci_5.tif",
+    "instrument": "MRO SHARAD / Mars Odyssey GRS / MRO HiRISE / MGS TES",
+    "parameter": "Composite Ice Consistency Index (Ci) across 0-1m, 1-5m, >5m",
+    "unit": "Consistency Index (-1.0 to +1.0)",
+    "coverage": "60\u00b0S to 60\u00b0N, global Martian longitude",
+    "resolution": "2963.735 m per pixel (Equicylindrical ESRI:103885)",
+    "dataStatus": "SOURCE OBSERVATION & SCIENTIFIC INTERPRETATION",
+    "missingHandling": "NoData pixels masked as NaN, not treated as 0.0",
+    "limitation": "Consistency indices represent remote-sensing agreement, NOT proven water extraction quantities."
+  },
+  "meda": {
+    "datasetName": "Mars Environmental Dynamics Analyzer (MEDA)",
+    "productName": "WE__1553___________CAL_ATS / CAL_PS / CAL_TIRS (Sol 1553)",
+    "instrument": "Mars 2020 Perseverance Rover Environmental Package",
+    "parameter": "Atmospheric Temperature, Pressure, Ground IR Temperature, Dust Optical Depth",
+    "unit": "Kelvin (K), Pascals (Pa), W/m\u00b2",
+    "coverage": "Jezero Crater Rover Traverse Track (Sol 1553 historical)",
+    "observationPeriod": "2 July 2025 to 3 July 2025 UTC",
+    "dataStatus": "HISTORICAL SOURCE OBSERVATION",
+    "missingHandling": "Fill values and bad quality flags excluded from medians.",
+    "limitation": "Valid historical rover surface observations, NOT live weather at the fictional base."
+  },
+  "msl_rad": {
+    "datasetName": "Radiation Assessment Detector (RAD)",
+    "productName": "MSL_RAD_OBS-L2 (mars_radiation.csv)",
+    "instrument": "Curiosity Rover Radiation Dosimeter (Gale Crater)",
+    "parameter": "Surface Absorbed Ionizing Radiation Dose Rate (Si & TEP)",
+    "unit": "\u00b5Gy/day",
+    "coverage": "Gale Crater Surface",
+    "observationPeriod": "1\u20137 October 2026",
+    "dataStatus": "HISTORICAL SOURCE OBSERVATION",
+    "missingHandling": "54 flagged command records excluded; only filtered _f records used.",
+    "limitation": "Measures physical absorbed dose in detector materials, NOT human biological dose equivalent."
+  },
+  "mcs": {
+    "datasetName": "Mars Climate Sounder (MCS)",
+    "productName": "20250701_DDR.TAB / DDR.LBL (Orbit 88752)",
+    "instrument": "MRO Limb Sounder",
+    "parameter": "Vertical Atmospheric Profiles of Temperature, Pressure, and Dust Opacity",
+    "unit": "Kelvin (K), Pascals (Pa), Optical Depth / km",
+    "coverage": "Atmospheric column profiles across Mars",
+    "observationPeriod": "1\u20135 July 2025",
+    "dataStatus": "SOURCE OBSERVATION (ATMOSPHERIC COLUMN)",
+    "missingHandling": "Limb pointing errors and missing levels filtered.",
+    "limitation": "Represents atmospheric layers at altitude, NOT local surface weather."
+  },
+  "donki": {
+    "datasetName": "NASA Space Weather Database (DONKI)",
+    "productName": "coronal_mass_ejections.json / solar_flares.json",
+    "instrument": "CCMC / GOES / SOHO / SDO Satellite Network",
+    "parameter": "Coronal Mass Ejection Speed & Solar Flare Classifications",
+    "unit": "km/s, X-ray Flux Class (B, C, M, X)",
+    "coverage": "Heliosphere / Interplanetary Space",
+    "observationPeriod": "October 2026 Events",
+    "dataStatus": "FICTIONAL TRAINING SCENARIO (HISTORICAL CONTEXT)",
+    "missingHandling": "Empty SEP file acknowledged with 0 records.",
+    "limitation": "Earth-oriented space weather system; does not calculate Mars astronaut dose."
+  }
+}

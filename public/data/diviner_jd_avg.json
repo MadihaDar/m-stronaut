@@ -1,0 +1,10 @@
+{
+  "dataset": "Diviner JD AVG (Average Observation Julian Date)",
+  "product": "DGDR_JD_AVG_CYL_20160111D_001_IMG",
+  "conversionFormula": "JD = DN * 0.01190476 + 2457338.0",
+  "localTimeWindows": {
+    "D": "Daytime observation window (approx. 06:00 to 18:00 local time)",
+    "N": "Nighttime observation window (approx. 18:00 to 06:00 local time)"
+  },
+  "criticalScientificRule": "JD AVG describes the exact date and timing of instrument sweeps. It is NOT a temperature measurement and must never be displayed as thermal degrees."
+}

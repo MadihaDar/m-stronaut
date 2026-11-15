@@ -1,0 +1,99 @@
+export const craterCatalogue = {
+  "catalogue": "Robbins Lunar Crater Database (2018) PDS4 Bundle",
+  "citation": "Robbins, S. J. (2018), JGR Planets, 124(4), 871-892",
+  "great_circle_formula": "d = R * arccos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(lon1 - lon2)), R = 1737.4 km",
+  "south_pole_targets": [
+    {
+      "id": "00-1-000004",
+      "name": "Shackleton Crater",
+      "lat": -89.67,
+      "lon": 129.78,
+      "diam_km": 20.9,
+      "depth_km": 4.2,
+      "features": "Permanently Shadowed Region (PSR), cold trap, hydrogen enrichment detected on rim"
+    },
+    {
+      "id": "00-1-000012",
+      "name": "de Gerlache Crater",
+      "lat": -88.48,
+      "lon": 271.65,
+      "diam_km": 32.7,
+      "depth_km": 3.8,
+      "features": "High illuminated rim peaks, steep interior slope"
+    },
+    {
+      "id": "00-1-000025",
+      "name": "Faustini Crater",
+      "lat": -87.18,
+      "lon": 84.31,
+      "diam_km": 39.0,
+      "depth_km": 3.1,
+      "features": "Deep cryo-temperatures recorded by Diviner, candidate volatile storage"
+    },
+    {
+      "id": "00-1-000031",
+      "name": "Shoemaker Crater",
+      "lat": -88.14,
+      "lon": 45.91,
+      "diam_km": 50.9,
+      "depth_km": 3.5,
+      "features": "Strong LEND epithermal neutron count suppression"
+    },
+    {
+      "id": "00-1-000044",
+      "name": "Haworth Crater",
+      "lat": -87.45,
+      "lon": 354.8,
+      "diam_km": 51.4,
+      "depth_km": 3.3,
+      "features": "Extensive permanent shadow, extreme cold (40K)"
+    },
+    {
+      "id": "00-1-000052",
+      "name": "Nobile Crater",
+      "lat": -85.28,
+      "lon": 53.47,
+      "diam_km": 79.3,
+      "depth_km": 3.7,
+      "features": "VIPER rover target site, rolling terrain on ridge"
+    }
+  ],
+  "mid_lat_targets": [
+    {
+      "id": "00-1-000017",
+      "name": "Aristillus Crater",
+      "lat": 23.66,
+      "lon": 358.72,
+      "diam_km": 54.8,
+      "depth_km": 3.6,
+      "features": "Prominent ray system, high rock abundance, prominent nighttime thermal anomaly in GHRM"
+    },
+    {
+      "id": "00-1-000019",
+      "name": "Autolycus Crater",
+      "lat": 20.78,
+      "lon": 356.98,
+      "diam_km": 39.2,
+      "depth_km": 3.4,
+      "features": "Fresh circular rim, blocky ejecta blanket, well characterized in Diviner GDR"
+    },
+    {
+      "id": "00-1-000022",
+      "name": "Archimedes Crater",
+      "lat": 29.72,
+      "lon": 356.01,
+      "diam_km": 81.0,
+      "depth_km": 2.1,
+      "features": "Smooth mare-flooded floor, low rock abundance in interior, rocky exterior rim"
+    },
+    {
+      "id": "00-1-000028",
+      "name": "Spitzbergen Montes Peak",
+      "lat": 24.5,
+      "lon": 346.0,
+      "diam_km": 60.0,
+      "depth_km": 1.5,
+      "features": "Isolated mountain chain remnant in Mare Imbrium with steep slopes"
+    }
+  ]
+};

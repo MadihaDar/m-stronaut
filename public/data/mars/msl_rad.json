@@ -1,0 +1,37 @@
+{
+  "dataset": "Radiation Assessment Detector (RAD)",
+  "roverMission": "NASA Mars Science Laboratory (MSL) Curiosity Rover (Gale Crater)",
+  "observationPeriod": "1\u20137 October 2026",
+  "datasetCode": "MSL_RAD_OBS-L2",
+  "qualityFilteredRecords": 1731,
+  "totalRecords": 1785,
+  "flaggedCommandRecordsExcluded": 54,
+  "channels": [
+    {
+      "dim0": 0,
+      "label": "Total Dose B (Silicon Detector)",
+      "meanDoseRateUGyDay": 187.58,
+      "unit": "\u00b5Gy/day",
+      "material": "Silicon (Si) solid-state detector",
+      "desc": "Total absorbed ionizing radiation including cosmic background and rover MMRTG contribution."
+    },
+    {
+      "dim0": 1,
+      "label": "RTG-Corrected Dose B (Silicon)",
+      "meanDoseRateUGyDay": 130.57,
+      "unit": "\u00b5Gy/day",
+      "material": "Silicon (Si) background-subtracted",
+      "desc": "Cosmic ray and solar particle surface dose with Curiosity's nuclear power generator (MMRTG) background subtracted."
+    },
+    {
+      "dim0": 2,
+      "label": "Total Dose E (Tissue-Equivalent Plastic)",
+      "meanDoseRateUGyDay": 187.05,
+      "unit": "\u00b5Gy/day",
+      "material": "Tissue-Equivalent Plastic (TEP)",
+      "desc": "Absorbed radiation dose through polymer plastic that mimics the atomic density of human muscle tissue."
+    }
+  ],
+  "educationalFormula": "Absorbed Dose: D = dose_rate * time",
+  "mandatoryIntegrityRule": "MSL RAD data was measured inside Gale Crater by Curiosity. It is NOT a measurement at the fictional Jezero habitat. Absorbed dose in \u00b5Gy is NOT the same as biological dose equivalent in Sieverts (Sv) without radiation quality weighting factors."
+}

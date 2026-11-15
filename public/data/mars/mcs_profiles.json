@@ -1,0 +1,54 @@
+{
+  "dataset": "Mars Climate Sounder (MCS)",
+  "spacecraft": "NASA Mars Reconnaissance Orbiter (MRO)",
+  "observationPeriod": "1\u20135 July 2025",
+  "totalProfiles": 25994,
+  "verticalLevelsPerProfile": 105,
+  "totalRecords": 2729370,
+  "orbitSubset": "Orbit 88752 (Within 5\u00b0 of Jezero Reference Point)",
+  "profileSample": [
+    {
+      "altitude_km": 0.0,
+      "temp_k": 218.0,
+      "pressure_pa": 635.0,
+      "dust_opacity": 0.08
+    },
+    {
+      "altitude_km": 5.0,
+      "temp_k": 208.5,
+      "pressure_pa": 380.0,
+      "dust_opacity": 0.05
+    },
+    {
+      "altitude_km": 10.0,
+      "temp_k": 198.0,
+      "pressure_pa": 220.0,
+      "dust_opacity": 0.03
+    },
+    {
+      "altitude_km": 20.0,
+      "temp_k": 182.0,
+      "pressure_pa": 75.0,
+      "dust_opacity": 0.02
+    },
+    {
+      "altitude_km": 30.0,
+      "temp_k": 171.0,
+      "pressure_pa": 25.0,
+      "dust_opacity": 0.01
+    },
+    {
+      "altitude_km": 40.0,
+      "temp_k": 164.0,
+      "pressure_pa": 8.0,
+      "dust_opacity": 0.005
+    },
+    {
+      "altitude_km": 50.0,
+      "temp_k": 158.0,
+      "pressure_pa": 2.5,
+      "dust_opacity": 0.001
+    }
+  ],
+  "mandatoryIntegrityRule": "MCS is an atmospheric limb sounder measuring the upper atmosphere. It does NOT provide live surface weather, local surface pressure, or daily weather forecasts for the fictional habitat."
+}

@@ -1,0 +1,35 @@
+{
+  "dataset": "Diviner GDR L3 Rock Abundance",
+  "product": "DGDR_RA_CLC_CYL_20090705N_128_IMG",
+  "coverage": "80\u00b0S to 80\u00b0N, global longitude",
+  "resolution": "128 pixels/degree",
+  "conversionFormula": "RA = DN * 0.001",
+  "missingValue": -32768,
+  "unit": "Areal fractional rock abundance (0.0 to 1.0)",
+  "surveyRegions": [
+    {
+      "region": "Mare Imbrium Smooth Plains",
+      "lat": 24.5,
+      "lon": 342.2,
+      "mean_RA": 0.008,
+      "hazard_level": "LOW",
+      "interpretation": "Deep fine regolith dust blanket, very few surface boulders larger than 1 meter. Ideal for high-speed rover traverses."
+    },
+    {
+      "region": "Aristillus Crater Ejecta Blanket",
+      "lat": 28.1,
+      "lon": 358.8,
+      "mean_RA": 0.084,
+      "hazard_level": "ELEVATED",
+      "interpretation": "Dense blocky crater ejecta. Multiple boulders exceeding rover wheel ground clearance (0.4m). Wheel navigation caution required."
+    },
+    {
+      "region": "Autolycus Rim Impact Melt",
+      "lat": 21.6,
+      "lon": 358.5,
+      "mean_RA": 0.142,
+      "hazard_level": "SEVERE",
+      "interpretation": "Extremely rocky terrain with jagged basaltic boulders and impact breccia. High hazard of chassis stranding."
+    }
+  ]
+}

@@ -1,0 +1,222 @@
+/* ============================================================
+   FRONTIER: MISSION ACADEMY — Mobile & Touch Controls
+   ============================================================ */
+
+/* ── Virtual Joystick ── */
+#mobile-controls {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  pointer-events: none;
+  display: none; /* enabled by JS on touch devices */
+}
+#mobile-controls.active { display: block; }
+
+/* Left zone: movement joystick */
+#joystick-zone {
+  position: absolute;
+  bottom: 80px;
+  left: var(--sp-5);
+  width: 150px; height: 150px;
+  pointer-events: auto;
+  border-radius: 50%;
+  touch-action: none;
+}
+
+#joystick-base {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+#joystick-thumb {
+  position: absolute;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: rgba(74,158,255,0.3);
+  border: 2px solid var(--blue-bright);
+  box-shadow: 0 0 20px var(--blue-glow);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: transform 0.05s;
+  display: flex; align-items: center; justify-content: center;
+}
+.joystick-dirs {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.6rem;
+}
+
+/* Right zone: camera swipe */
+#camera-zone {
+  position: absolute;
+  right: 0; top: 0;
+  width: 55%; height: 100%;
+  pointer-events: auto;
+  touch-action: none;
+  /* invisible */
+}
+
+/* ── Mobile Action Buttons ── */
+#mobile-actions {
+  position: absolute;
+  bottom: 80px;
+  right: var(--sp-5);
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--sp-3);
+  pointer-events: auto;
+}
+
+.mobile-action-btn {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  border: 2px solid;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all var(--t-mid);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+.mobile-action-btn::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: -20px;
+  left: 50%; transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+.mobile-action-btn:active { transform: scale(0.9); }
+
+.btn-jump-mobile {
+  background: rgba(0, 229, 255, 0.2);
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+.btn-lander-mobile {
+  background: rgba(0, 255, 200, 0.2);
+  border-color: #00ffcc;
+  color: #00ffcc;
+}
+.btn-interact {
+  background: rgba(74,158,255,0.2);
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+}
+.btn-rover-toggle {
+  background: rgba(255,140,66,0.2);
+  border-color: var(--leo-color);
+  color: var(--leo-color);
+}
+.btn-scanner {
+  background: rgba(66,217,148,0.2);
+  border-color: var(--status-safe);
+  color: var(--status-safe);
+}
+.btn-map {
+  background: rgba(255,215,0,0.15);
+  border-color: var(--gold-bright);
+  color: var(--gold-bright);
+}
+.btn-pause-mobile {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
+  color: var(--text-secondary);
+}
+
+/* ── Mobile Tactical Radar & Navigation at top-right ── */
+@media (max-width: 600px) {
+  #hud-nav-container {
+    bottom: auto;
+    top: 52px;
+    right: var(--sp-3);
+    gap: 4px;
+    z-index: 25;
+  }
+  #hud-waypoint-card {
+    width: 135px;
+    padding: 5px 8px;
+  }
+  #hud-minimap {
+    width: 90px;
+    height: 90px;
+  }
+  .radar-footer {
+    display: none;
+  }
+  #hud-resources {
+    width: 170px;
+    top: auto;
+    bottom: var(--sp-3);
+    left: var(--sp-3);
+  }
+  #hud-character {
+    top: 52px;
+    left: var(--sp-3);
+    min-width: 0;
+  }
+  .hud-char-name { font-size: 0.75rem; }
+  .hud-char-role { display: none; }
+  .hud-char-portrait { width: 36px; height: 36px; font-size: 1.1rem; }
+  #hud-hints { display: none; } /* replaced by mobile buttons */
+  #hud-zoom-controls {
+    right: var(--sp-3);
+    top: 50%;
+    transform: translateY(-50%);
+    bottom: auto;
+  }
+  .hud-zoom-btn {
+    padding: 6px 8px;
+  }
+  .zoom-btn-text {
+    display: none;
+  }
+  .dialogue-portrait { width: 54px; height: 54px; font-size: 1.5rem; }
+  .dialogue-inner { flex-direction: column; gap: var(--sp-3); }
+  #destination-panel { padding: var(--sp-3); }
+  .dest-cards { flex-direction: column; align-items: center; }
+  .dest-card { width: min(320px, 90vw); }
+}
+
+@media (max-width: 480px) {
+  .menu-logo-primary { font-size: 2.5rem; }
+  .menu-btn { padding: var(--sp-3) var(--sp-4); }
+  .menu-btn-icon { width: 28px; height: 28px; font-size: 1.1rem; }
+  #hud-topbar { padding: 0 var(--sp-3); height: 46px; }
+  .side-panel { width: 100vw; }
+}
+
+/* ── Touch tap feedback ── */
+@media (hover: none) {
+  .menu-btn:hover { transform: none; }
+  .menu-btn:active { transform: translateX(2px) scale(0.98); background: rgba(74,158,255,0.12); }
+  .dest-card.unlocked:hover { transform: none; }
+  .dest-card.unlocked:active { transform: scale(0.97); }
+}
+
+/* ── Landscape on small screens ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .menu-wrap { gap: var(--sp-3); }
+  .menu-logo { gap: var(--sp-1); }
+  .menu-logo-primary { font-size: 2rem; }
+  .menu-nav { gap: var(--sp-1); }
+  .menu-btn { padding: var(--sp-2) var(--sp-4); }
+  #dialogue-panel { padding: var(--sp-2); }
+  .dialogue-portrait { width: 48px; height: 48px; font-size: 1.3rem; }
+}

@@ -1,0 +1,446 @@
+{
+  "dataset": "Robbins Lunar Crater Database 2018 & Supplementary 2015 Catalogue",
+  "radius_km": 1737.4,
+  "distanceFormula": "d = R * arccos(sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(lon1 - lon2))",
+  "southPoleCraters": [
+    {
+      "name": "Shackleton",
+      "lat": -89.9,
+      "lon": 0.0,
+      "diam_km": 21.0,
+      "depth_km": 4.2,
+      "psr_area_km2": 210,
+      "morphology": "Simple bowl-shaped crater, sharp rim, permanently shadowed floor containing cryogenic ice traps."
+    },
+    {
+      "name": "Faustini",
+      "lat": -87.3,
+      "lon": 77.0,
+      "diam_km": 39.0,
+      "depth_km": 3.8,
+      "psr_area_km2": 450,
+      "morphology": "Degraded pre-Nectarian crater rim with substantial floor cold traps."
+    },
+    {
+      "name": "Shoemaker",
+      "lat": -88.1,
+      "lon": 44.9,
+      "diam_km": 50.9,
+      "depth_km": 3.0,
+      "psr_area_km2": 670,
+      "morphology": "Named in honor of planetary scientist Eugene Shoemaker. Prominent LEND neutron suppression dip."
+    },
+    {
+      "name": "Haworth",
+      "lat": -87.4,
+      "lon": 354.9,
+      "diam_km": 35.0,
+      "depth_km": 3.5,
+      "psr_area_km2": 380,
+      "morphology": "Steep north-facing walls; permanent shadow shielded from solar radiation."
+    },
+    {
+      "name": "Amundsen",
+      "lat": -84.5,
+      "lon": 82.8,
+      "diam_km": 105.0,
+      "depth_km": 3.2,
+      "psr_area_km2": 820,
+      "morphology": "Complex impact crater with terraced walls and a central mountain peak."
+    },
+    {
+      "id": "10-1-000764",
+      "lat": -85.4476,
+      "lon": 347.593,
+      "diam_km": 8.56
+    },
+    {
+      "id": "10-1-000791",
+      "lat": -85.5629,
+      "lon": 307.649,
+      "diam_km": 19.43
+    },
+    {
+      "id": "10-1-000793",
+      "lat": -85.329,
+      "lon": 53.2496,
+      "diam_km": 77.01
+    },
+    {
+      "id": "10-1-000837",
+      "lat": -87.1809,
+      "lon": 84.5234,
+      "diam_km": 44.17
+    },
+    {
+      "id": "10-1-000838",
+      "lat": -88.0787,
+      "lon": 47.5154,
+      "diam_km": 53.29
+    },
+    {
+      "id": "10-1-000839",
+      "lat": -88.5073,
+      "lon": 352.024,
+      "diam_km": 21.93
+    },
+    {
+      "id": "10-1-000840",
+      "lat": -88.4964,
+      "lon": 270.72,
+      "diam_km": 33.1
+    },
+    {
+      "id": "10-1-000841",
+      "lat": -85.4674,
+      "lon": 316.134,
+      "diam_km": 97.69
+    },
+    {
+      "id": "10-1-000851",
+      "lat": -86.2959,
+      "lon": 284.849,
+      "diam_km": 12.36
+    },
+    {
+      "id": "10-1-000852",
+      "lat": -88.3322,
+      "lon": 73.895,
+      "diam_km": 9.3
+    },
+    {
+      "id": "10-1-000853",
+      "lat": -88.324,
+      "lon": 80.502,
+      "diam_km": 8.58
+    },
+    {
+      "id": "10-1-000870",
+      "lat": -87.1207,
+      "lon": 107.176,
+      "diam_km": 23.74
+    },
+    {
+      "id": "10-1-000871",
+      "lat": -87.4683,
+      "lon": 118.244,
+      "diam_km": 14.72
+    },
+    {
+      "id": "10-1-000872",
+      "lat": -87.8467,
+      "lon": 126.643,
+      "diam_km": 9.55
+    },
+    {
+      "id": "10-1-000873",
+      "lat": -88.2105,
+      "lon": 126.009,
+      "diam_km": 13.76
+    },
+    {
+      "id": "10-1-000874",
+      "lat": -88.1503,
+      "lon": 112.732,
+      "diam_km": 26.55
+    },
+    {
+      "id": "10-1-000875",
+      "lat": -88.9474,
+      "lon": 147.018,
+      "diam_km": 12.12
+    },
+    {
+      "id": "10-1-000876",
+      "lat": -87.41,
+      "lon": 251.818,
+      "diam_km": 11.44
+    },
+    {
+      "id": "10-1-000915",
+      "lat": -85.1041,
+      "lon": 151.234,
+      "diam_km": 37.13
+    },
+    {
+      "id": "10-1-000916",
+      "lat": -85.1854,
+      "lon": 182.329,
+      "diam_km": 35.49
+    },
+    {
+      "id": "10-1-000917",
+      "lat": -85.7422,
+      "lon": 200.281,
+      "diam_km": 8.59
+    },
+    {
+      "id": "10-1-000918",
+      "lat": -85.733,
+      "lon": 211.869,
+      "diam_km": 8.84
+    },
+    {
+      "id": "10-1-001007",
+      "lat": -87.446,
+      "lon": 355.732,
+      "diam_km": 54.76
+    },
+    {
+      "id": "10-1-001305",
+      "lat": -88.3124,
+      "lon": 207.1,
+      "diam_km": 33.59
+    },
+    {
+      "id": "10-1-001306",
+      "lat": -88.5465,
+      "lon": 231.004,
+      "diam_km": 38.36
+    },
+    {
+      "id": "10-1-001307",
+      "lat": -85.7195,
+      "lon": 106.804,
+      "diam_km": 7.05
+    },
+    {
+      "id": "10-1-001313",
+      "lat": -89.0048,
+      "lon": 16.4199,
+      "diam_km": 17.29
+    },
+    {
+      "id": "10-1-001314",
+      "lat": -85.0926,
+      "lon": 291.979,
+      "diam_km": 21.89
+    },
+    {
+      "id": "10-1-079063",
+      "lat": -85.215,
+      "lon": 331.618,
+      "diam_km": 3.72
+    },
+    {
+      "id": "10-1-079068",
+      "lat": -85.3242,
+      "lon": 335.14,
+      "diam_km": 2.0
+    }
+  ],
+  "thermalFrontierCraters": [
+    {
+      "name": "Plato",
+      "lat": 51.62,
+      "lon": 350.62,
+      "diam_km": 101.0,
+      "depth_km": 1.4,
+      "morphology": "Dark basalt-flooded lava floor with low albedo and distinct thermal heating rates."
+    },
+    {
+      "name": "Aristillus",
+      "lat": 33.88,
+      "lon": 1.21,
+      "diam_km": 55.0,
+      "depth_km": 3.3,
+      "morphology": "Copernican-age impact crater with bright ray system and blocky rock-rich ejecta."
+    },
+    {
+      "name": "Autolycus",
+      "lat": 30.68,
+      "lon": 1.49,
+      "diam_km": 39.0,
+      "depth_km": 3.4,
+      "morphology": "Complex crater with sharp circular rim and rocky debris fields in Diviner RA maps."
+    },
+    {
+      "name": "Archimedes",
+      "lat": 29.72,
+      "lon": 356.01,
+      "diam_km": 83.0,
+      "depth_km": 2.1,
+      "morphology": "Large walled plain with smooth basalt floor in Mare Imbrium."
+    },
+    {
+      "id": "00-1-000007",
+      "lat": 26.8611,
+      "lon": 149.162,
+      "diam_km": 634.74
+    },
+    {
+      "id": "00-1-000015",
+      "lat": 26.2091,
+      "lon": 147.494,
+      "diam_km": 423.87
+    },
+    {
+      "id": "00-1-000017",
+      "lat": 27.0221,
+      "lon": 22.8638,
+      "diam_km": 866.2
+    },
+    {
+      "id": "02-1-000873",
+      "lat": 29.7894,
+      "lon": 181.031,
+      "diam_km": 23.45
+    },
+    {
+      "id": "02-1-000875",
+      "lat": 28.006,
+      "lon": 182.88,
+      "diam_km": 53.76
+    },
+    {
+      "id": "02-1-000876",
+      "lat": 28.8573,
+      "lon": 184.716,
+      "diam_km": 10.22
+    },
+    {
+      "id": "02-1-000877",
+      "lat": 28.4982,
+      "lon": 186.022,
+      "diam_km": 48.51
+    },
+    {
+      "id": "02-1-000879",
+      "lat": 29.6502,
+      "lon": 186.519,
+      "diam_km": 19.13
+    },
+    {
+      "id": "02-1-000880",
+      "lat": 28.9972,
+      "lon": 189.261,
+      "diam_km": 24.35
+    },
+    {
+      "id": "02-1-000881",
+      "lat": 28.6144,
+      "lon": 190.072,
+      "diam_km": 20.61
+    },
+    {
+      "id": "02-1-000912",
+      "lat": 29.2641,
+      "lon": 193.191,
+      "diam_km": 15.65
+    },
+    {
+      "id": "02-1-000913",
+      "lat": 29.3899,
+      "lon": 192.68,
+      "diam_km": 24.41
+    },
+    {
+      "id": "02-1-000914",
+      "lat": 29.407,
+      "lon": 193.648,
+      "diam_km": 14.25
+    },
+    {
+      "id": "02-1-000915",
+      "lat": 29.8726,
+      "lon": 193.359,
+      "diam_km": 19.0
+    },
+    {
+      "id": "02-1-000916",
+      "lat": 28.7726,
+      "lon": 196.321,
+      "diam_km": 62.06
+    },
+    {
+      "id": "02-1-000917",
+      "lat": 29.2376,
+      "lon": 197.829,
+      "diam_km": 11.95
+    },
+    {
+      "id": "02-1-000918",
+      "lat": 29.0183,
+      "lon": 197.933,
+      "diam_km": 14.86
+    },
+    {
+      "id": "02-1-000920",
+      "lat": 28.2666,
+      "lon": 198.773,
+      "diam_km": 13.61
+    },
+    {
+      "id": "02-1-000921",
+      "lat": 28.0265,
+      "lon": 199.636,
+      "diam_km": 10.98
+    },
+    {
+      "id": "02-1-000928",
+      "lat": 29.871,
+      "lon": 198.317,
+      "diam_km": 21.2
+    },
+    {
+      "id": "02-1-000929",
+      "lat": 26.7575,
+      "lon": 187.873,
+      "diam_km": 99.45
+    },
+    {
+      "id": "02-1-000930",
+      "lat": 27.6719,
+      "lon": 192.955,
+      "diam_km": 19.26
+    },
+    {
+      "id": "02-1-000933",
+      "lat": 29.5893,
+      "lon": 199.912,
+      "diam_km": 15.67
+    },
+    {
+      "id": "02-1-000934",
+      "lat": 29.8681,
+      "lon": 201.047,
+      "diam_km": 14.42
+    },
+    {
+      "id": "02-1-000935",
+      "lat": 29.1887,
+      "lon": 199.81,
+      "diam_km": 14.83
+    },
+    {
+      "id": "02-1-000936",
+      "lat": 27.3833,
+      "lon": 198.473,
+      "diam_km": 66.39
+    },
+    {
+      "id": "02-1-000937",
+      "lat": 27.668,
+      "lon": 198.634,
+      "diam_km": 39.29
+    },
+    {
+      "id": "02-1-000938",
+      "lat": 26.773,
+      "lon": 197.129,
+      "diam_km": 25.19
+    },
+    {
+      "id": "02-1-000974",
+      "lat": 29.093,
+      "lon": 203.122,
+      "diam_km": 16.03
+    },
+    {
+      "id": "02-1-000975",
+      "lat": 29.4775,
+      "lon": 204.553,
+      "diam_km": 13.91
+    }
+  ]
+}

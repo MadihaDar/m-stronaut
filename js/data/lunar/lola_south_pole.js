@@ -1,0 +1,547 @@
+export const lolaData = {
+  "dataset": "LRO LOLA RDR (Orbits 400-800)",
+  "coverage": "85\u00b0S to 90\u00b0S, 0\u00b0 to 360\u00b0E",
+  "formula": "h_metres = (POINT_RADIUS - SELENOID_RADIUS) * 1000",
+  "points": [
+    {
+      "utc": "2009-07-27T21:24:32.87875760",
+      "lat": -87.73298,
+      "lon": 7.76513,
+      "point_radius_km": 1734.6622,
+      "selenoid_radius_km": 1736.9331,
+      "elevation_m": -2270.89,
+      "slope_deg": 0.0
+    },
+    {
+      "utc": "2009-07-27T21:24:54.27161503",
+      "lat": -86.58901,
+      "lon": 3.29506,
+      "point_radius_km": 1739.2531,
+      "selenoid_radius_km": 1736.9391,
+      "elevation_m": 2313.92,
+      "slope_deg": 7.34
+    },
+    {
+      "utc": "2009-07-27T21:25:06.16447335",
+      "lat": -85.94787,
+      "lon": 1.91069,
+      "point_radius_km": 1742.4649,
+      "selenoid_radius_km": 1736.9424,
+      "elevation_m": 5522.54,
+      "slope_deg": 9.27
+    },
+    {
+      "utc": "2009-07-27T19:25:03.12823939",
+      "lat": -88.41374,
+      "lon": 14.65754,
+      "point_radius_km": 1737.123,
+      "selenoid_radius_km": 1736.9294,
+      "elevation_m": 193.64,
+      "slope_deg": 4.04
+    },
+    {
+      "utc": "2009-07-27T19:25:32.59252632",
+      "lat": -86.85286,
+      "lon": 5.09435,
+      "point_radius_km": 1737.9271,
+      "selenoid_radius_km": 1736.9378,
+      "elevation_m": 989.3,
+      "slope_deg": 0.91
+    },
+    {
+      "utc": "2009-07-27T19:25:48.12824225",
+      "lat": -86.01603,
+      "lon": 3.09692,
+      "point_radius_km": 1742.4929,
+      "selenoid_radius_km": 1736.942,
+      "elevation_m": 5550.83,
+      "slope_deg": 10.06
+    },
+    {
+      "utc": "2009-07-27T23:23:37.98641562",
+      "lat": -88.35183,
+      "lon": 11.85867,
+      "point_radius_km": 1737.0313,
+      "selenoid_radius_km": 1736.9298,
+      "elevation_m": 101.54,
+      "slope_deg": 4.37
+    },
+    {
+      "utc": "2009-07-27T23:24:12.16498959",
+      "lat": -86.53512,
+      "lon": 2.13286,
+      "point_radius_km": 1739.691,
+      "selenoid_radius_km": 1736.9395,
+      "elevation_m": 2751.52,
+      "slope_deg": 2.62
+    },
+    {
+      "utc": "2009-07-27T23:24:28.98641974",
+      "lat": -85.62729,
+      "lon": 0.33982,
+      "point_radius_km": 1738.2863,
+      "selenoid_radius_km": 1736.9441,
+      "elevation_m": 1342.25,
+      "slope_deg": 2.9
+    },
+    {
+      "utc": "2009-07-28T07:20:56.09562582",
+      "lat": -87.72173,
+      "lon": 2.8052,
+      "point_radius_km": 1733.9537,
+      "selenoid_radius_km": 1736.9333,
+      "elevation_m": -2979.69,
+      "slope_deg": 3.89
+    },
+    {
+      "utc": "2009-07-28T09:20:13.06042773",
+      "lat": -87.68776,
+      "lon": 1.64111,
+      "point_radius_km": 1733.908,
+      "selenoid_radius_km": 1736.9335,
+      "elevation_m": -3025.58,
+      "slope_deg": 1.5
+    },
+    {
+      "utc": "2009-07-28T01:23:15.16550565",
+      "lat": -87.26807,
+      "lon": 3.49205,
+      "point_radius_km": 1734.2486,
+      "selenoid_radius_km": 1736.9357,
+      "elevation_m": -2687.07,
+      "slope_deg": 1.49
+    },
+    {
+      "utc": "2009-07-28T01:23:37.45121992",
+      "lat": -86.07027,
+      "lon": 0.0906,
+      "point_radius_km": 1741.7094,
+      "selenoid_radius_km": 1736.9419,
+      "elevation_m": 4767.57,
+      "slope_deg": 11.39
+    },
+    {
+      "utc": "2009-07-28T03:22:30.91602105",
+      "lat": -87.31167,
+      "lon": 2.69507,
+      "point_radius_km": 1734.0989,
+      "selenoid_radius_km": 1736.9355,
+      "elevation_m": -2836.61,
+      "slope_deg": 11.37
+    },
+    {
+      "utc": "2009-07-28T05:21:29.41653675",
+      "lat": -88.26037,
+      "lon": 8.05994,
+      "point_radius_km": 1737.1171,
+      "selenoid_radius_km": 1736.9304,
+      "elevation_m": 186.71,
+      "slope_deg": 5.91
+    },
+    {
+      "utc": "2009-07-28T17:17:01.88392127",
+      "lat": -88.50267,
+      "lon": 5.49497,
+      "point_radius_km": 1737.2949,
+      "selenoid_radius_km": 1736.9291,
+      "elevation_m": 365.8,
+      "slope_deg": 1.35
+    },
+    {
+      "utc": "2009-07-31T12:51:45.93719417",
+      "lat": -89.91023,
+      "lon": 0.58896,
+      "point_radius_km": 1738.116,
+      "selenoid_radius_km": 1736.9213,
+      "elevation_m": 1194.72,
+      "slope_deg": 1.11
+    },
+    {
+      "utc": "2009-08-09T01:37:08.02608162",
+      "lat": -85.08792,
+      "lon": 6.98879,
+      "point_radius_km": 1735.2044,
+      "selenoid_radius_km": 1736.9463,
+      "elevation_m": -1741.95,
+      "slope_deg": 1.14
+    },
+    {
+      "utc": "2009-08-09T01:37:09.81179541",
+      "lat": -85.18351,
+      "lon": 6.83346,
+      "point_radius_km": 1735.2657,
+      "selenoid_radius_km": 1736.9459,
+      "elevation_m": -1680.13,
+      "slope_deg": 1.21
+    },
+    {
+      "utc": "2009-08-09T01:37:11.59750980",
+      "lat": -85.28049,
+      "lon": 6.67808,
+      "point_radius_km": 1736.0461,
+      "selenoid_radius_km": 1736.9454,
+      "elevation_m": -899.36,
+      "slope_deg": 14.75
+    },
+    {
+      "utc": "2009-08-09T01:37:13.41893905",
+      "lat": -85.37887,
+      "lon": 6.50171,
+      "point_radius_km": 1736.8696,
+      "selenoid_radius_km": 1736.945,
+      "elevation_m": -75.38,
+      "slope_deg": 15.29
+    },
+    {
+      "utc": "2009-08-09T01:37:15.20465362",
+      "lat": -85.47525,
+      "lon": 6.32099,
+      "point_radius_km": 1737.3697,
+      "selenoid_radius_km": 1736.9445,
+      "elevation_m": 425.19,
+      "slope_deg": 9.62
+    },
+    {
+      "utc": "2009-08-09T01:37:17.02608281",
+      "lat": -85.5739,
+      "lon": 6.11258,
+      "point_radius_km": 1738.15,
+      "selenoid_radius_km": 1736.9441,
+      "elevation_m": 1205.93,
+      "slope_deg": 14.45
+    },
+    {
+      "utc": "2009-08-09T01:37:18.84751076",
+      "lat": -85.67196,
+      "lon": 5.92053,
+      "point_radius_km": 1739.1644,
+      "selenoid_radius_km": 1736.9436,
+      "elevation_m": 2220.79,
+      "slope_deg": 18.66
+    },
+    {
+      "utc": "2009-08-09T01:37:20.63322419",
+      "lat": -85.76823,
+      "lon": 5.71487,
+      "point_radius_km": 1740.0579,
+      "selenoid_radius_km": 1736.9431,
+      "elevation_m": 3114.73,
+      "slope_deg": 16.83
+    },
+    {
+      "utc": "2009-08-09T01:37:22.41893917",
+      "lat": -85.86443,
+      "lon": 5.49946,
+      "point_radius_km": 1740.8248,
+      "selenoid_radius_km": 1736.9427,
+      "elevation_m": 3882.15,
+      "slope_deg": 14.56
+    },
+    {
+      "utc": "2009-08-09T01:37:24.20465457",
+      "lat": -85.96073,
+      "lon": 5.26496,
+      "point_radius_km": 1741.4076,
+      "selenoid_radius_km": 1736.9422,
+      "elevation_m": 4465.42,
+      "slope_deg": 11.14
+    },
+    {
+      "utc": "2009-08-09T01:37:26.06179744",
+      "lat": -86.06105,
+      "lon": 5.02838,
+      "point_radius_km": 1741.7939,
+      "selenoid_radius_km": 1736.9417,
+      "elevation_m": 4852.12,
+      "slope_deg": 7.15
+    },
+    {
+      "utc": "2009-08-09T01:37:27.84751105",
+      "lat": -86.15624,
+      "lon": 4.78262,
+      "point_radius_km": 1741.1388,
+      "selenoid_radius_km": 1736.9413,
+      "elevation_m": 4197.56,
+      "slope_deg": 12.6
+    },
+    {
+      "utc": "2009-08-09T01:37:29.66894031",
+      "lat": -86.25429,
+      "lon": 4.49443,
+      "point_radius_km": 1740.4287,
+      "selenoid_radius_km": 1736.9408,
+      "elevation_m": 3487.9,
+      "slope_deg": 13.19
+    },
+    {
+      "utc": "2009-08-09T01:37:31.45465487",
+      "lat": -86.35006,
+      "lon": 4.2158,
+      "point_radius_km": 1740.0315,
+      "selenoid_radius_km": 1736.9403,
+      "elevation_m": 3091.15,
+      "slope_deg": 7.65
+    },
+    {
+      "utc": "2009-08-09T01:37:33.24036920",
+      "lat": -86.44575,
+      "lon": 3.9225,
+      "point_radius_km": 1739.7948,
+      "selenoid_radius_km": 1736.9399,
+      "elevation_m": 2854.94,
+      "slope_deg": 4.57
+    },
+    {
+      "utc": "2009-08-09T01:37:35.02608448",
+      "lat": -86.54059,
+      "lon": 3.62042,
+      "point_radius_km": 1739.5822,
+      "selenoid_radius_km": 1736.9394,
+      "elevation_m": 2642.75,
+      "slope_deg": 4.14
+    },
+    {
+      "utc": "2009-08-09T01:37:36.84751225",
+      "lat": -86.63859,
+      "lon": 3.28882,
+      "point_radius_km": 1738.9391,
+      "selenoid_radius_km": 1736.9389,
+      "elevation_m": 2000.15,
+      "slope_deg": 11.98
+    },
+    {
+      "utc": "2009-08-09T01:37:38.63322550",
+      "lat": -86.73457,
+      "lon": 2.9443,
+      "point_radius_km": 1738.2621,
+      "selenoid_radius_km": 1736.9384,
+      "elevation_m": 1323.67,
+      "slope_deg": 12.83
+    },
+    {
+      "utc": "2009-08-09T01:37:40.41894066",
+      "lat": -86.82928,
+      "lon": 2.5606,
+      "point_radius_km": 1737.279,
+      "selenoid_radius_km": 1736.938,
+      "elevation_m": 341.08,
+      "slope_deg": 18.46
+    },
+    {
+      "utc": "2009-08-09T01:37:42.24037051",
+      "lat": -86.92625,
+      "lon": 2.16112,
+      "point_radius_km": 1736.5666,
+      "selenoid_radius_km": 1736.9375,
+      "elevation_m": -370.87,
+      "slope_deg": 13.3
+    },
+    {
+      "utc": "2009-08-09T01:37:44.02608490",
+      "lat": -87.02115,
+      "lon": 1.74289,
+      "point_radius_km": 1735.4697,
+      "selenoid_radius_km": 1736.937,
+      "elevation_m": -1467.34,
+      "slope_deg": 20.38
+    },
+    {
+      "utc": "2009-08-09T01:37:45.81179839",
+      "lat": -87.11505,
+      "lon": 1.30923,
+      "point_radius_km": 1734.6851,
+      "selenoid_radius_km": 1736.9365,
+      "elevation_m": -2251.4,
+      "slope_deg": 15.01
+    },
+    {
+      "utc": "2009-08-09T01:37:47.59751272",
+      "lat": -87.21022,
+      "lon": 0.85374,
+      "point_radius_km": 1734.2305,
+      "selenoid_radius_km": 1736.936,
+      "elevation_m": -2705.55,
+      "slope_deg": 8.71
+    },
+    {
+      "utc": "2009-08-09T01:37:49.41894186",
+      "lat": -87.30738,
+      "lon": 0.32655,
+      "point_radius_km": 1734.0914,
+      "selenoid_radius_km": 1736.9355,
+      "elevation_m": -2844.11,
+      "slope_deg": 2.61
+    },
+    {
+      "utc": "2009-08-08T05:45:13.77092427",
+      "lat": -87.30527,
+      "lon": 13.92288,
+      "point_radius_km": 1736.4524,
+      "selenoid_radius_km": 1736.9351,
+      "elevation_m": -482.66,
+      "slope_deg": 6.95
+    },
+    {
+      "utc": "2009-08-08T05:45:15.52092415",
+      "lat": -87.3996,
+      "lon": 13.49715,
+      "point_radius_km": 1736.1825,
+      "selenoid_radius_km": 1736.9346,
+      "elevation_m": -752.17,
+      "slope_deg": 5.27
+    },
+    {
+      "utc": "2009-08-08T05:45:17.30663872",
+      "lat": -87.49356,
+      "lon": 12.99993,
+      "point_radius_km": 1735.9736,
+      "selenoid_radius_km": 1736.9342,
+      "elevation_m": -960.64,
+      "slope_deg": 4.08
+    },
+    {
+      "utc": "2009-08-08T05:45:19.12806755",
+      "lat": -87.5904,
+      "lon": 12.49634,
+      "point_radius_km": 1735.2407,
+      "selenoid_radius_km": 1736.9337,
+      "elevation_m": -1692.99,
+      "slope_deg": 13.69
+    },
+    {
+      "utc": "2009-08-08T05:45:20.98521084",
+      "lat": -87.68774,
+      "lon": 11.89613,
+      "point_radius_km": 1735.5676,
+      "selenoid_radius_km": 1736.9333,
+      "elevation_m": -1365.6,
+      "slope_deg": 6.14
+    },
+    {
+      "utc": "2009-08-08T05:45:22.80663902",
+      "lat": -87.7834,
+      "lon": 11.29954,
+      "point_radius_km": 1735.6482,
+      "selenoid_radius_km": 1736.9328,
+      "elevation_m": -1284.53,
+      "slope_deg": 1.56
+    },
+    {
+      "utc": "2009-08-08T05:45:24.69949543",
+      "lat": -87.88345,
+      "lon": 10.60465,
+      "point_radius_km": 1735.8128,
+      "selenoid_radius_km": 1736.9323,
+      "elevation_m": -1119.52,
+      "slope_deg": 3.02
+    },
+    {
+      "utc": "2009-08-08T05:45:26.69949651",
+      "lat": -87.98709,
+      "lon": 9.80936,
+      "point_radius_km": 1736.0358,
+      "selenoid_radius_km": 1736.9318,
+      "elevation_m": -895.98,
+      "slope_deg": 3.93
+    },
+    {
+      "utc": "2009-08-08T05:45:28.91378278",
+      "lat": -88.10241,
+      "lon": 8.78364,
+      "point_radius_km": 1736.2361,
+      "selenoid_radius_km": 1736.9312,
+      "elevation_m": -695.1,
+      "slope_deg": 3.15
+    },
+    {
+      "utc": "2009-08-08T05:45:31.66378182",
+      "lat": -88.24458,
+      "lon": 7.3559,
+      "point_radius_km": 1736.9716,
+      "selenoid_radius_km": 1736.9305,
+      "elevation_m": 41.15,
+      "slope_deg": 9.27
+    },
+    {
+      "utc": "2009-08-08T05:45:34.05664092",
+      "lat": -88.36729,
+      "lon": 5.88292,
+      "point_radius_km": 1737.1087,
+      "selenoid_radius_km": 1736.9298,
+      "elevation_m": 178.85,
+      "slope_deg": 2.01
+    },
+    {
+      "utc": "2009-08-08T05:45:36.59235418",
+      "lat": -88.49585,
+      "lon": 4.12013,
+      "point_radius_km": 1737.0214,
+      "selenoid_radius_km": 1736.9292,
+      "elevation_m": 92.21,
+      "slope_deg": 1.2
+    },
+    {
+      "utc": "2009-08-09T03:36:22.20516926",
+      "lat": -85.01866,
+      "lon": 6.08134,
+      "point_radius_km": 1735.308,
+      "selenoid_radius_km": 1736.9467,
+      "elevation_m": -1638.73,
+      "slope_deg": 0.94
+    },
+    {
+      "utc": "2009-08-09T03:36:24.02659839",
+      "lat": -85.11803,
+      "lon": 5.91776,
+      "point_radius_km": 1735.3178,
+      "selenoid_radius_km": 1736.9462,
+      "elevation_m": -1628.45,
+      "slope_deg": 0.19
+    },
+    {
+      "utc": "2009-08-09T03:36:25.81231177",
+      "lat": -85.21456,
+      "lon": 5.75726,
+      "point_radius_km": 1735.884,
+      "selenoid_radius_km": 1736.9458,
+      "elevation_m": -1061.81,
+      "slope_deg": 10.86
+    },
+    {
+      "utc": "2009-08-09T03:36:27.59802580",
+      "lat": -85.30974,
+      "lon": 5.58464,
+      "point_radius_km": 1736.361,
+      "selenoid_radius_km": 1736.9453,
+      "elevation_m": -584.3,
+      "slope_deg": 9.29
+    },
+    {
+      "utc": "2009-08-09T03:36:29.41945523",
+      "lat": -85.40863,
+      "lon": 5.41822,
+      "point_radius_km": 1737.3739,
+      "selenoid_radius_km": 1736.9449,
+      "elevation_m": 429.06,
+      "slope_deg": 18.52
+    },
+    {
+      "utc": "2009-08-09T03:36:31.24088377",
+      "lat": -85.50656,
+      "lon": 5.22338,
+      "point_radius_km": 1738.4864,
+      "selenoid_radius_km": 1736.9444,
+      "elevation_m": 1541.99,
+      "slope_deg": 20.32
+    },
+    {
+      "utc": "2009-08-09T03:36:33.06231296",
+      "lat": -85.60549,
+      "lon": 5.03304,
+      "point_radius_km": 1739.4494,
+      "selenoid_radius_km": 1736.944,
+      "elevation_m": 2505.43,
+      "slope_deg": 17.63
+    }
+  ]
+};

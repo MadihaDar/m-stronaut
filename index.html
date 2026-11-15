@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>M-STRONAUT: Mission Academy Game</title>
+  
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/menu.css">
+  <link rel="stylesheet" href="styles/hud.css">
+  <link rel="stylesheet" href="styles/dialogue.css">
+  <link rel="stylesheet" href="styles/panels.css">
+  <link rel="stylesheet" href="styles/mobile.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Three.js ES Module Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.158.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script>
+    window.addEventListener('error', (event) => {
+      console.error('[Frontier Global Error]', event.message, event.filename, event.lineno, event.error);
+    });
+    window.addEventListener('unhandledrejection', (event) => {
+      console.error('[Frontier Unhandled Promise Rejection]', event.reason);
+    });
+  </script>
+</head>
+<body>
+  <!-- 3D Canvas -->
+  <canvas id="game-canvas"></canvas>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen">
+    <div class="loading-logo">M-STRONAUT</div>
+    <div class="loading-sub">Mission Academy Game</div>
+    <div class="loading-bar-wrap">
+      <div id="loading-bar" class="loading-bar"></div>
+    </div>
+    <div id="loading-status" class="loading-status">INITIALIZING SYSTEMS...</div>
+  </div>
+
+  <!-- Notification Toasts Layer -->
+  <div id="ui-notification"></div>
+
+  <!-- Dimmed Backdrop for Modals and Side Panels -->
+  <div id="panel-backdrop" class="panel-backdrop"></div>
+
+  <!-- Main Menu Overlay -->
+  <div id="main-menu" class="ui-layer">
+    <div class="menu-wrap">
+      <div class="menu-logo">
+        <h1 class="menu-logo-primary">M-STRONAUT</h1>
+        <div class="menu-logo-secondary">Mission Academy Game</div>
+        <p class="menu-logo-tagline">Scientific Deep-Space Outpost & Astronaut Trainer</p>
+      </div>
+
+      <div class="menu-divider"></div>
+
+      <div class="menu-nav">
+        <button id="btn-destination" class="menu-btn menu-btn-primary">
+          <span class="menu-btn-icon">🪐</span>
+          <div class="menu-btn-text">
+            <span class="menu-btn-title">DESTINATION SELECTOR</span>
+            <span class="menu-btn-sub">Moon (South Pole) & Mars (Jezero Crater) Outposts</span>
+          </div>
+          <span class="menu-btn-arrow">▶</span>
+        </button>
+
+        <button id="btn-about-moon" class="menu-btn">
+          <span class="menu-btn-icon">🌕</span>
+          <div class="menu-btn-text">
+            <span class="menu-btn-title">ABOUT THE MOON</span>
+            <span class="menu-btn-sub">Artemis II Science, Astronaut Training &amp; 5 Lunar Missions</span>
+          </div>
+          <span class="menu-btn-arrow">▶</span>
+        </button>
+
+        <button id="btn-about-mars" class="menu-btn">
+          <span class="menu-btn-icon">🔴</span>
+          <div class="menu-btn-text">
+            <span class="menu-btn-title">ABOUT MARS</span>
+            <span class="menu-btn-sub">Planetary Science, Curiosity APXS &amp; Mars Expeditions</span>
+          </div>
+          <span class="menu-btn-arrow">▶</span>
+        </button>
+
+        <button id="btn-settings" class="menu-btn">
+          <span class="menu-btn-icon">⚙️</span>
+          <div class="menu-btn-text">
+            <span class="menu-btn-title">SETTINGS & ACCESSIBILITY</span>
+            <span class="menu-btn-sub">Audio, subtitles, text scaling, data modes</span>
+          </div>
+          <span class="menu-btn-arrow">▶</span>
+        </button>
+      </div>
+
+      <div class="menu-footer">
+        <div class="menu-footer-nasa">Powered by real open scientific datasets from <span>LRO (LEND, DIVINER, LOLA, CRaTER)</span>, <span>MSL (RAD)</span>, <span>Mars 2020 (MEDA)</span> & <span>DONKI</span></div>
+        <div class="menu-version">FRONTIER ENGINE v1.0.0-PROTOTYPE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destination Selector -->
+  <div id="destination-panel" class="ui-layer">
+    <div class="dest-header">
+      <div class="dest-title">SELECT MISSION OUTPOST</div>
+      <div class="dest-subtitle">Choose your deployment theatre. Each site poses unique real environmental hazards and scientific trade-offs.</div>
+    </div>
+
+    <div class="dest-cards">
+      <!-- Moon Card (Unlocked Campaign) -->
+      <div id="card-moon" class="dest-card moon unlocked">
+        <div class="dest-card-preview">
+          <div class="dest-card-planet"></div>
+        </div>
+        <div class="dest-card-info">
+          <div class="dest-card-name">Moon: Orbital Recon & Surface Missions</div>
+          <div class="dest-card-site">Orbiting Spacecraft Cabin • Shackleton & Mare Imbrium</div>
+          <p class="dest-card-desc">Walk inside orbiting spacecraft cabin, look out panoramic cupola window to scan Moon regions & NASA telemetry, and initiate powered descent to explore on foot and rover!</p>
+          <span class="dest-card-status status-unlocked">● ENTER ORBITAL SPACECRAFT</span>
+        </div>
+      </div>
+
+      <!-- Mars Card (Unlocked Campaign) -->
+      <div id="card-mars" class="dest-card mars unlocked">
+        <div class="dest-card-preview">
+          <div class="dest-card-planet"></div>
+        </div>
+        <div class="dest-card-info">
+          <div class="dest-card-name">Mars: Martian Campaign</div>
+          <div class="dest-card-site">Jezero Crater Outpost (18.4°N, 77.5°E)</div>
+          <p class="dest-card-desc">Two interconnected campaigns: Sol 1–10 surface survival & MAV orbital ascent/Earth transit. Choices persist between missions!</p>
+          <span class="dest-card-status status-unlocked">● 2 MISSIONS ACTIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dest-back">
+      <button id="btn-dest-back" class="btn btn-secondary">◀ RETURN TO COMMAND MENU</button>
+    </div>
+  </div>
+
+  <!-- Moon Missions Centered Tactical Archive Modal -->
+  <div id="moon-mission-modal" class="lunar-archive-center-modal">
+    <div class="lunar-modal-header">
+      <div class="lunar-modal-title-group">
+        <span class="lunar-modal-icon">🌕</span>
+        <div>
+          <div class="lunar-modal-heading">LUNAR OPERATIONS ARCHIVE (5 MISSIONS)</div>
+          <div class="lunar-modal-subheading">NASA Artemis Surface Expedition • Select a mission or scan all sites from orbit</div>
+        </div>
+      </div>
+      <button class="panel-close-btn" id="btn-close-moon-missions" title="Close Archive">✕</button>
+    </div>
+
+    <div class="lunar-modal-scroll-body">
+      <!-- Quick Launch: High-Altitude Orbital Reconnaissance -->
+      <div id="btn-launch-moon-orbit" class="lunar-orbit-hero-banner" role="button" tabindex="0">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 2rem;">🔭</span>
+          <div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: #38bdf8;">
+              ENTER HIGH LUNAR ORBIT (110 KM CUPOLA RECONNAISSANCE)
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.8rem; color: #cbd5e1;">
+              Walk inside the spacecraft cupola window to rotate the 3D Moon and inspect real NASA datasets (LOLA, Diviner, LEND, LROC).
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="border-color: #38bdf8; color: #38bdf8; font-weight: 800; padding: 8px 16px; flex-shrink: 0; pointer-events: none;">
+          SCAN FROM ORBIT ▶
+        </button>
+      </div>
+
+      <!-- 5 Mission Cards Grid -->
+      <div class="lunar-missions-grid">
+        <!-- Mission 1: Ice Water Hunt -->
+        <div id="card-moon-m1" class="lunar-mission-card" style="--card-accent: #00e5ff; --card-border: #00e5ff; --card-btn-bg: linear-gradient(135deg, #0284c7, #00e5ff); --card-glow: rgba(0, 229, 255, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/moon_mission_01.svg" alt="South Pole Outpost" />
+            <div class="lunar-card-badge">❄️ SOUTH POLE • SHACKLETON RIM</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">❄️</span>
+                <span class="lunar-card-title">MISSION 1: ICE WATER HUNT</span>
+              </div>
+              <span id="status-moon-m1" class="dest-card-status status-unlocked">WATER ICE DETECTED</span>
+            </div>
+            <p class="lunar-card-desc">
+              Drive your lunar rover along the mountain ridge in perpetual sunlight, deploy the giant golden mirror dish to power the base, and balance breathable air vs battery power!
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #38bdf8; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>Oxygen Scrubbing vs Base Battery Power</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>🚨</span>
+                <span style="color: #f87171; font-weight: 700;">Hazard:</span>
+                <span>DONKI Solar Flare CME Storm (Race to Bunker!)</span>
+              </div>
+            </div>
+            <button id="btn-launch-moon-m1" class="lunar-card-launch-btn">
+              <span>🚀 PLAY MISSION 1: ICE WATER HUNT ▶</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mission 2: Lava Plain Race -->
+        <div id="card-moon-m2" class="lunar-mission-card" style="--card-accent: #ffaa00; --card-border: #ffaa00; --card-btn-bg: linear-gradient(135deg, #d97706, #ffaa00); --card-glow: rgba(255, 170, 0, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/moon_mission_02.svg" alt="Mare Imbrium Thermal Anomaly" />
+            <div class="lunar-card-badge">🌋 MARE IMBRIUM • LAVA PLAIN</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌋</span>
+                <span class="lunar-card-title">MISSION 2: LAVA PLAIN RACE</span>
+              </div>
+              <span id="status-moon-m2" class="dest-card-status status-unlocked" style="color: #f59e0b; border-color: #f59e0b;">HEAT ANOMALY (+32K)</span>
+            </div>
+            <p class="lunar-card-desc">
+              Drive your rover across the dark lunar sea during the 14-day freezing night, zap hot rocks with lasers, manage cabin heating trade-offs, and race home before the solar storm hits!
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #fb923c; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>Rover Speed vs Cabin Heating in -130°C Cold</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>🚨</span>
+                <span style="color: #f87171; font-weight: 700;">Hazard:</span>
+                <span>520 km/s Solar Particle Event (65s Evacuation)</span>
+              </div>
+            </div>
+            <button id="btn-launch-moon-m2" class="lunar-card-launch-btn">
+              <span>🚀 PLAY MISSION 2: LAVA PLAIN RACE ▶</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mission 3: Secret Cave Scout -->
+        <div id="card-moon-m3" class="lunar-mission-card" style="--card-accent: #4ade80; --card-border: #4ade80; --card-btn-bg: linear-gradient(135deg, #16a34a, #4ade80); --card-glow: rgba(74, 222, 128, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/moon_mission_03.svg" alt="Marius Hills Lava Tube" />
+            <div class="lunar-card-badge">🕳️ MARIUS HILLS • 65M SKYLIGHT</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🕳️</span>
+                <span class="lunar-card-title">MISSION 3: SECRET CAVE SCOUT</span>
+              </div>
+              <span id="status-moon-m3" class="dest-card-status status-unlocked" style="color: #4ade80; border-color: #4ade80;">100% RADIATION SAFE</span>
+            </div>
+            <p class="lunar-card-desc">
+              Lower your rover down a 65-meter skylight hole into a giant underground volcanic cave safe from space radiation, and map it with 3D LiDAR lasers!
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #4ade80; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>150m Safe Cable Tether vs Deep Cave Driving</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>🛡️</span>
+                <span style="color: #4ade80; font-weight: 700;">Radiation Shield:</span>
+                <span>100% Solid Basalt Cosmic Shield (Zero Harm)</span>
+              </div>
+            </div>
+            <button id="btn-launch-moon-m3" class="lunar-card-launch-btn">
+              <span>🚀 PLAY MISSION 3: SECRET CAVE SCOUT ▶</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mission 4: Deep Cold Ice Mine -->
+        <div id="card-moon-m4" class="lunar-mission-card" style="--card-accent: #60a5fa; --card-border: #60a5fa; --card-btn-bg: linear-gradient(135deg, #2563eb, #60a5fa); --card-glow: rgba(96, 165, 250, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/moon_mission_04.svg" alt="Faustini Crater Cryo-Mine" />
+            <div class="lunar-card-badge">🧊 FAUSTINI CRATER • 40 KELVIN PSR</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title">MISSION 4: DEEP COLD ICE MINE</span>
+              </div>
+              <span id="status-moon-m4" class="dest-card-status status-unlocked" style="color: #60a5fa; border-color: #60a5fa;">LCROSS 5.5 wt% H₂O</span>
+            </div>
+            <p class="lunar-card-desc">
+              Brave the super-cold shadow at -233°C, drill frozen permafrost ice with your diamond-carbide drill, and decide: make rocket fuel or drinking water?
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #60a5fa; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>Hydrolox Rocket Fuel vs Potable Drinking Water</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>❄️</span>
+                <span style="color: #93c5fd; font-weight: 700;">Hazard:</span>
+                <span>Visor Frost Freeze & Rapid Thermal Battery Drain</span>
+              </div>
+            </div>
+            <button id="btn-launch-moon-m4" class="lunar-card-launch-btn">
+              <span>🚀 PLAY MISSION 4: DEEP COLD ICE MINE ▶</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mission 5: Quiet Radio Dish -->
+        <div id="card-moon-m5" class="lunar-mission-card" style="--card-accent: #c084fc; --card-border: #c084fc; --card-btn-bg: linear-gradient(135deg, #9333ea, #c084fc); --card-glow: rgba(192, 132, 252, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/moon_mission_05.svg" alt="Daedalus Radio Array" />
+            <div class="lunar-card-badge">📡 DAEDALUS CRATER • FAR SIDE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">📡</span>
+                <span class="lunar-card-title">MISSION 5: QUIET RADIO DISH</span>
+              </div>
+              <span id="status-moon-m5" class="dest-card-status status-unlocked" style="color: #c084fc; border-color: #c084fc;">RADIO QUIET ZONE</span>
+            </div>
+            <p class="lunar-card-desc">
+              Drive to the quiet far side of the Moon where the entire Moon blocks human radio noise, erect a 3-mast radio telescope, turn off cabin heaters for radio silence, and listen to the first stars!
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #c084fc; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>Cut Heaters (EMCON Silence) vs Astronaut Warmth</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>✨</span>
+                <span style="color: #e9d5ff; font-weight: 700;">Cosmic Reward:</span>
+                <span>Detect 21cm Hydrogen Waves from Cosmic Dawn</span>
+              </div>
+            </div>
+            <button id="btn-launch-moon-m5" class="lunar-card-launch-btn">
+              <span>🚀 PLAY MISSION 5: QUIET RADIO DISH ▶</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mars Missions Centered Tactical Archive Modal -->
+  <div id="mars-mission-modal" class="lunar-archive-center-modal mars-archive-center-modal">
+    <div class="lunar-modal-header">
+      <div class="lunar-modal-title-group">
+        <span class="lunar-modal-icon">🔴</span>
+        <div>
+          <div class="lunar-modal-heading" style="color: #ff8c42;">MARTIAN OPERATIONS ARCHIVE</div>
+          <div class="lunar-modal-subheading" style="color: #fb923c;">NASA Mars Surface Expedition • Select a mission or scan all sites from orbit</div>
+        </div>
+      </div>
+      <button class="panel-close-btn" id="btn-close-mars-missions" title="Close Archive">✕</button>
+    </div>
+
+    <div class="lunar-modal-scroll-body">
+      <!-- Quick Launch: High-Altitude Orbital Reconnaissance -->
+      <div id="btn-launch-mars-orbit" class="lunar-orbit-hero-banner" role="button" tabindex="0" style="background: linear-gradient(135deg, rgba(255, 140, 66, 0.18), rgba(28, 14, 10, 0.88)); border-color: rgba(255, 140, 66, 0.5);">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 2rem;">🔭</span>
+          <div>
+            <div style="font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: #ff8c42;">
+              ENTER HIGH MARTIAN ORBIT (250 KM CUPOLA RECONNAISSANCE)
+            </div>
+            <div style="font-family: var(--font-body); font-size: 0.8rem; color: #fed7aa;">
+              Walk inside the spacecraft cupola window to rotate the 3D Mars globe, scan candidate landing sites (Jezero Crater Delta vs Arcadia Planitia), and calibrate starting life support!
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="border-color: #ff8c42; color: #ff8c42; font-weight: 800; padding: 8px 16px; flex-shrink: 0; pointer-events: none;">
+          SCAN FROM ORBIT ▶
+        </button>
+      </div>
+
+      <!-- Mars Mission Cards Grid -->
+      <div class="lunar-missions-grid">
+        <!-- Mission 1: Jezero Delta Ancient Riverbed -->
+        <div id="card-mars-m1" class="lunar-mission-card" style="--card-accent: #fb923c; --card-border: #fb923c; --card-btn-bg: linear-gradient(135deg, #ea580c, #fb923c); --card-glow: rgba(251, 146, 60, 0.4);">
+          <div class="lunar-card-banner">
+            <img src="/assets/images/mars_mission_m01.svg" alt="Jezero Riverbed Delta" />
+            <div class="lunar-card-badge">🏞️ JEZERO DELTA • ANCIENT RIVERBED</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🏞️</span>
+                <span class="lunar-card-title">MISSION 1: JEZERO DELTA CLAY SCOUT</span>
+              </div>
+              <span id="status-mars-m1" class="dest-card-status status-unlocked" style="color: #fb923c; border-color: #fb923c;">RIVERBED CLAYS</span>
+            </div>
+            <p class="lunar-card-desc">
+              Pilot a rover-drone scout team across the dried-up river delta in Jezero Crater to drill chalk-sized core samples of ancient lakebed clay and search for microbial biosignatures!
+            </p>
+            <div class="lunar-tradeoff-box">
+              <div class="lunar-tradeoff-item">
+                <span>⚖️</span>
+                <span style="color: #fb923c; font-weight: 700;">Life Support Trade-Off:</span>
+                <span>Ingenuity Drone Scout Flight vs Rover Battery</span>
+              </div>
+              <div class="lunar-tradeoff-item">
+                <span>🚨</span>
+                <span style="color: #f87171; font-weight: 700;">Hazard:</span>
+                <span>Steep Delta Boulders &amp; 1% Thin Martian Atmosphere</span>
+              </div>
+            </div>
+            <button id="btn-launch-mars-m1" class="lunar-card-launch-btn">
+              <span>🚜 PLAY MISSION 1: JEZERO DELTA ▶</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT THE MOON & ARTEMIS SCIENCE Centered Tactical Science Modal -->
+  <div id="about-moon-modal" class="lunar-archive-center-modal flashcard-center-modal ">
+    <div class="lunar-modal-header">
+      <div class="lunar-modal-title-group">
+        <span class="lunar-modal-icon">🌕</span>
+        <div>
+          <div class="lunar-modal-heading" style="color: #38bdf8;">ABOUT THE MOON & ARTEMIS SCIENCE (21 CARDS)</div>
+          <div class="lunar-modal-subheading">NASA LRO, LCROSS, ARTEMIS II CREW & EXPEDITION SCIENCE ARCHIVE</div>
+        </div>
+      </div>
+      <button class="panel-close-btn" id="btn-close-about-moon" title="Close Gallery">✕</button>
+    </div>
+
+    <div class="gallery-filter-bar">
+      <button class="gallery-filter-btn active" data-filter="all">ALL SCIENTIFIC CARDS (21)</button>
+      <button class="gallery-filter-btn" data-filter="filter-general">GENERAL PLANETARY SCIENCE</button>
+      <button class="gallery-filter-btn" data-filter="filter-m1">MISSION 1: SHACKLETON</button>
+      
+      <button class="gallery-filter-btn" data-filter="filter-m2">MISSION 2: THERMAL</button>
+      <button class="gallery-filter-btn" data-filter="filter-m3">MISSION 3: LAVA TUBE</button>
+      <button class="gallery-filter-btn" data-filter="filter-m4">MISSION 4: CRYO-ICE</button>
+      <button class="gallery-filter-btn" data-filter="filter-m5">MISSION 5: FAR SIDE</button>
+      
+    </div>
+
+    <div class="lunar-modal-scroll-body">
+      <div class="lunar-missions-grid" style="grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));">
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="NASA LRO LOLA Topography & Narrow Angle Camera Mosaic" style="--card-accent: #00e5ff; --card-border: #00e5ff; --card-glow: #00e5ff66; --card-btn-bg: linear-gradient(135deg, #00e5ff99, #00e5ff); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m1_card1.jpg" alt="1. The Real Shackleton Crater Rim" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #00e5ff; border-color: #00e5ff88;">LUNAR MISSION 1 • SHACKLETON RIM</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">❄️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. The Real Shackleton Crater Rim</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              This real orbital view from NASA's Lunar Reconnaissance Orbiter shows the Moon's South Pole, where sunlit mountain peaks border permanently shadowed craters at -233°C.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="NASA LRO LOLA Topography & Narrow Angle Camera Mosaic" style="--card-accent: #00e5ff; --card-border: #00e5ff; --card-glow: #00e5ff66; --card-btn-bg: linear-gradient(135deg, #00e5ff99, #00e5ff); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/bddd88b2-8f8e-46d0-836c-64f7c895cd0e.jpg" alt="2. Training on Earth's Volcanic Ridges" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #00e5ff; border-color: #00e5ff88;">LUNAR MISSION 1 • SHACKLETON RIM</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">❄️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Training on Earth's Volcanic Ridges</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Before flying to the Moon, Artemis II prime and backup astronauts practiced navigating steep, jagged volcanic ridges on Earth to prepare for lunar polar terrain.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="NASA LRO LOLA Topography & Narrow Angle Camera Mosaic" style="--card-accent: #00e5ff; --card-border: #00e5ff; --card-glow: #00e5ff66; --card-btn-bg: linear-gradient(135deg, #00e5ff99, #00e5ff); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m1_card3.jpg" alt="3. Spacesuits Built for Deep Shadow" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #00e5ff; border-color: #00e5ff88;">LUNAR MISSION 1 • SHACKLETON RIM</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">❄️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Spacesuits Built for Deep Shadow</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Next-generation lunar spacesuits include heavily insulated boots and bright helmet lights so astronauts can safely walk into freezing polar shadows without losing battery warmth.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA/NOAA DONKI Space Weather Alerts & LRO Diviner Thermal Radiometry" style="--card-accent: #ffaa00; --card-border: #ffaa00; --card-glow: #ffaa0066; --card-btn-bg: linear-gradient(135deg, #ffaa0099, #ffaa00); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m2_card1.jpg" alt="1. Inside the Sea of Rains (Mare Imbrium)" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ffaa00; border-color: #ffaa0088;">LUNAR MISSION 2 • OCEAN OF STORMS</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌋</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Inside the Sea of Rains (Mare Imbrium)</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Apollo 15 astronauts actually drove their electric Lunar Rover across the edge of Mare Imbrium—an ancient lava plain over 1,100 km wide!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA/NOAA DONKI Space Weather Alerts & LRO Diviner Thermal Radiometry" style="--card-accent: #ffaa00; --card-border: #ffaa00; --card-glow: #ffaa0066; --card-btn-bg: linear-gradient(135deg, #ffaa0099, #ffaa00); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m2_card2.jpg" alt="2. When the Sun Launches a Proton Storm" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ffaa00; border-color: #ffaa0088;">LUNAR MISSION 2 • OCEAN OF STORMS</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌋</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. When the Sun Launches a Proton Storm</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              When the Sun erupts with an M-class or X-class flare, invisible radioactive protons race toward the Moon at over 1,000 km/s—just like the DONKI storm you raced!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA/NOAA DONKI Space Weather Alerts & LRO Diviner Thermal Radiometry" style="--card-accent: #ffaa00; --card-border: #ffaa00; --card-glow: #ffaa0066; --card-btn-bg: linear-gradient(135deg, #ffaa0099, #ffaa00); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/e3648ca8-515f-4270-8809-fad43fab20c5.jpg" alt="3. Real Space Radiation Detectors" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ffaa00; border-color: #ffaa0088;">LUNAR MISSION 2 • OCEAN OF STORMS</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌋</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Real Space Radiation Detectors</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Artemis II carried live 'organ-on-a-chip' tissue sensors and radiation detectors inside Orion to measure how solar storms affect human cells in deep space.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m3" data-source="NASA LRO Diviner & JAXA SELENE Subsurface Radar Sounder" style="--card-accent: #4ade80; --card-border: #4ade80; --card-glow: #4ade8066; --card-btn-bg: linear-gradient(135deg, #4ade8099, #4ade80); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m3_card1.jpg" alt="1. The Real Marius Hills Skylight" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #4ade80; border-color: #4ade8088;">LUNAR MISSION 3 • MARIUS LAVA TUBE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🕳️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. The Real Marius Hills Skylight</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              NASA's LRO orbiter spotted this 65-meter-wide vertical hole in the Marius Hills—a collapsed ceiling opening directly into a giant underground lunar lava tube.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m3" data-source="NASA LRO Diviner & JAXA SELENE Subsurface Radar Sounder" style="--card-accent: #4ade80; --card-border: #4ade80; --card-glow: #4ade8066; --card-btn-bg: linear-gradient(135deg, #4ade8099, #4ade80); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m3_card2.jpg" alt="2. Astronauts Training in Dark Caves" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #4ade80; border-color: #4ade8088;">LUNAR MISSION 3 • MARIUS LAVA TUBE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🕳️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Astronauts Training in Dark Caves</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Astronauts like CSA's Jeremy Hansen train in pitch-black underground caverns using safety tethers and headlamps to practice exploring dark planetary pits.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m3" data-source="NASA LRO Diviner & JAXA SELENE Subsurface Radar Sounder" style="--card-accent: #4ade80; --card-border: #4ade80; --card-glow: #4ade8066; --card-btn-bg: linear-gradient(135deg, #4ade8099, #4ade80); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m3_card3.jpg" alt="3. Natural 100% Radiation Bunkers" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #4ade80; border-color: #4ade8088;">LUNAR MISSION 3 • MARIUS LAVA TUBE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🕳️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Natural 100% Radiation Bunkers</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Because the Moon has no thick atmosphere, thick basalt cave roofs act as natural bunkers—blocking 100% of deadly cosmic radiation and micrometeorites.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m4" data-source="NASA LCROSS Plume Spectroscopy & LRO LEND Epithermal Neutron Flux" style="--card-accent: #60a5fa; --card-border: #60a5fa; --card-glow: #60a5fa66; --card-btn-bg: linear-gradient(135deg, #60a5fa99, #60a5fa); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m4_card1.jpg" alt="1. Drilling Into Frozen Lunar Soil" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #60a5fa; border-color: #60a5fa88;">LUNAR MISSION 4 • FAUSTINI CRYO-ICE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Drilling Into Frozen Lunar Soil</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Apollo 17 astronauts used a rotary percussion drill to bore deep into hard-packed lunar regolith—the ancestor of the carbide auger rig you deployed in Faustini Crater.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m4" data-source="NASA LCROSS Plume Spectroscopy & LRO LEND Epithermal Neutron Flux" style="--card-accent: #60a5fa; --card-border: #60a5fa; --card-glow: #60a5fa66; --card-btn-bg: linear-gradient(135deg, #60a5fa99, #60a5fa); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m4_card2.jpg" alt="2. Discovering Water Ice at the Poles" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #60a5fa; border-color: #60a5fa88;">LUNAR MISSION 4 • FAUSTINI CRYO-ICE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Discovering Water Ice at the Poles</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              NASA's LCROSS mission impacted a permanently shadowed polar crater and confirmed ~5.5% water ice mixed into the ultra-cold 40-Kelvin lunar soil.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m4" data-source="NASA LCROSS Plume Spectroscopy & LRO LEND Epithermal Neutron Flux" style="--card-accent: #60a5fa; --card-border: #60a5fa; --card-glow: #60a5fa66; --card-btn-bg: linear-gradient(135deg, #60a5fa99, #60a5fa); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/etape-de-la-mission-rendez-vous-orion.jpg" alt="3. Splitting Ice Into Rocket Fuel" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #60a5fa; border-color: #60a5fa88;">LUNAR MISSION 4 • FAUSTINI CRYO-ICE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Splitting Ice Into Rocket Fuel</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Using electricity from solar panels, future Moon miners will split melted water (H2O) into liquid hydrogen and liquid oxygen—the exact rocket fuel used by Orion's upper stage!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m5" data-source="NASA Lunar Crater Radio Telescope (LCRT) & Artemis II Far-Side Photography" style="--card-accent: #c084fc; --card-border: #c084fc; --card-glow: #c084fc66; --card-btn-bg: linear-gradient(135deg, #c084fc99, #c084fc); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/5595078a-ea62-40f2-a55d-d89db27c8c1b.jpg" alt="1. Earth Disappearing Behind the Moon" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #c084fc; border-color: #c084fc88;">LUNAR MISSION 5 • FAR SIDE RELAY</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">📡</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Earth Disappearing Behind the Moon</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Snapped by the Artemis II crew through Orion's window as Earth set behind the lunar horizon—marking the exact moment all radio contact with Earth went silent.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m5" data-source="NASA Lunar Crater Radio Telescope (LCRT) & Artemis II Far-Side Photography" style="--card-accent: #c084fc; --card-border: #c084fc; --card-glow: #c084fc66; --card-btn-bg: linear-gradient(135deg, #c084fc99, #c084fc); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/84574994-a915-4902-8800-bdbdbb6bc62c.jpg" alt="2. Solar Eclipse from the Lunar Far Side" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #c084fc; border-color: #c084fc88;">LUNAR MISSION 5 • FAR SIDE RELAY</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">📡</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Solar Eclipse from the Lunar Far Side</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              While flying 6,544 km beyond the Far Side, the Artemis II astronauts captured this rare view of Earth eclipsing the Sun over ancient, heavily cratered terrain.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m5" data-source="NASA Lunar Crater Radio Telescope (LCRT) & Artemis II Far-Side Photography" style="--card-accent: #c084fc; --card-border: #c084fc; --card-glow: #c084fc66; --card-btn-bg: linear-gradient(135deg, #c084fc99, #c084fc); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/m5_card3.jpg" alt="3. Giant Dish in a Far-Side Crater" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #c084fc; border-color: #c084fc88;">LUNAR MISSION 5 • FAR SIDE RELAY</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">📡</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Giant Dish in a Far-Side Crater</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              NASA engineers designed the Lunar Crater Radio Telescope—a 1-kilometer wire-mesh dish suspended inside a far-side crater—where 2,000 miles of solid Moon rock blocks Earth's radio noise so it can hear faint signals from the early universe.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/bf98d34a-3c88-4bbc-b2e1-643c91ed25e6.jpg" alt="1. How Astronauts Fly to the Moon" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. How Astronauts Fly to the Moon</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Artemis II used a 'free-return' figure-eight path—looping behind the Moon's far side so the Moon's gravity naturally slingshots the capsule back toward Earth.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/artemis-ii-recherche-scientifique-pendant-mission-id-19647-ban.jpg" alt="2. Meet the Artemis II Crew" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Meet the Artemis II Crew</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Four astronauts—Reid Wiseman, Victor Glover, Christina Koch, and Canada's Jeremy Hansen—became the first humans in over 50 years to travel to lunar space.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/0db27667-4ee4-4ebe-ba57-d0e57082d433.jpg" alt="3. Crescent Earth & Crescent Moon" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Crescent Earth & Crescent Moon</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              A day on the Moon lasts 29.5 Earth days—meaning two full weeks of blazing sunshine followed by two full weeks of freezing lunar night!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/defi-alimentation-dans-lespace-cangrow-id-18946.jpg" alt="4. Growing Veggies Without Soil" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">4. Growing Veggies Without Soil</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Through the Deep Space Food Challenge, Canadian teams built compact indoor farms like CANGrow that grow fresh leafy greens using LED lights and misted nutrients.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/moon_5_astronaut_food.jpg" alt="5. What Astronauts Eat in Space" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">5. What Astronauts Eat in Space</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Space food has to be lightweight, crumb-free (so crumbs don't float into electronics!), and packed with vitamins to keep bones and muscles strong in low gravity.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Lunar Reconnaissance Orbiter (LRO) & CSA Artemis II Program" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/moon_6_rovers.jpg" alt="6. Driving on the Moon" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">GENERAL MOON SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🌕</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">6. Driving on the Moon</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Moon gravity is only 1/6th of Earth's! On Apollo missions, electric Lunar Rovers bounced across grey regolith dust at up to 18 km/h.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #38bdf8; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT MARS & EXPLORATION SCIENCE Centered Tactical Science Modal -->
+  <div id="about-mars-modal" class="lunar-archive-center-modal flashcard-center-modal mars-theme-center-modal">
+    <div class="lunar-modal-header">
+      <div class="lunar-modal-title-group">
+        <span class="lunar-modal-icon">🔴</span>
+        <div>
+          <div class="lunar-modal-heading" style="color: #ff8c42;">ABOUT MARS & EXPLORATION SCIENCE (12 CARDS)</div>
+          <div class="lunar-modal-subheading">NASA PERSEVERANCE, INGENUITY, CURIOSITY APXS & RED PLANET ARCHIVE</div>
+        </div>
+      </div>
+      <button class="panel-close-btn" id="btn-close-about-mars" title="Close Gallery">✕</button>
+    </div>
+
+    <div class="gallery-filter-bar">
+      <button class="gallery-filter-btn active" data-filter="all">ALL SCIENTIFIC CARDS (12)</button>
+      <button class="gallery-filter-btn" data-filter="filter-general">GENERAL PLANETARY SCIENCE</button>
+      <button class="gallery-filter-btn" data-filter="filter-m1">MISSION 1: JEZERO</button>
+      
+      <button class="gallery-filter-btn" data-filter="filter-m2">ARCADIA REGION</button>
+      
+    </div>
+
+    <div class="lunar-modal-scroll-body">
+      <div class="lunar-missions-grid" style="grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));">
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="Mars 2020 Perseverance MEDA, Mastcam-Z & Ingenuity Flight Telemetry" style="--card-accent: #fb923c; --card-border: #fb923c; --card-glow: #fb923c66; --card-btn-bg: linear-gradient(135deg, #fb923c99, #fb923c); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m1_card1.jpg" alt="1. Reading Ancient Water in Clay" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #fb923c; border-color: #fb923c88;">MARS MISSION 1 • JEZERO DELTA</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🏞️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Reading Ancient Water in Clay</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Billions of years ago, rivers flowed into Jezero Crater and formed a deep lake—leaving behind layered mudstones that trap chemical clues of ancient life.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="Mars 2020 Perseverance MEDA, Mastcam-Z & Ingenuity Flight Telemetry" style="--card-accent: #fb923c; --card-border: #fb923c; --card-glow: #fb923c66; --card-btn-bg: linear-gradient(135deg, #fb923c99, #fb923c); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m1_card2.jpg" alt="2. Caching Rock Cores for Earth" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #fb923c; border-color: #fb923c88;">MARS MISSION 1 • JEZERO DELTA</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🏞️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Caching Rock Cores for Earth</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Perseverance drills chalk-sized rock cores and seals them in ultra-clean titanium tubes so a future Mars Sample Return lander can fly them back to Earth's labs.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m1" data-source="Mars 2020 Perseverance MEDA, Mastcam-Z & Ingenuity Flight Telemetry" style="--card-accent: #fb923c; --card-border: #fb923c; --card-glow: #fb923c66; --card-btn-bg: linear-gradient(135deg, #fb923c99, #fb923c); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m1_card3.jpg" alt="3. Flying in Thin Martian Air" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #fb923c; border-color: #fb923c88;">MARS MISSION 1 • JEZERO DELTA</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🏞️</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Flying in Thin Martian Air</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Mars's atmosphere is only 1% as thick as Earth's, so NASA's Ingenuity helicopter had to spin its carbon-fiber blades over 2,500 times per minute just to lift off.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA Subsurface Water Ice Mapping (SWIM) & MRO SHARAD Radar Sounder" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m2_card1.jpg" alt="1. Buried Ice Sheets Under Red Dust" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">MARS CANDIDATE • ARCADIA GLACIER</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Buried Ice Sheets Under Red Dust</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Orbital radar proved that vast sheets of pure water ice sit just centimeters beneath the rusty soil in Mars's mid-latitudes—enough to supply future astronauts with water and fuel.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA Subsurface Water Ice Mapping (SWIM) & MRO SHARAD Radar Sounder" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m2_card2.jpg" alt="2. Making Rocket Fuel From Mars Air & Ice" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">MARS CANDIDATE • ARCADIA GLACIER</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Making Rocket Fuel From Mars Air & Ice</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Using the Sabatier reaction, engineers combine hydrogen from melted Martian ice with carbon dioxide from Mars's air to brew methane propellant for the Mars Ascent Vehicle.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-m2" data-source="NASA Subsurface Water Ice Mapping (SWIM) & MRO SHARAD Radar Sounder" style="--card-accent: #38bdf8; --card-border: #38bdf8; --card-glow: #38bdf866; --card-btn-bg: linear-gradient(135deg, #38bdf899, #38bdf8); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_m2_card3.jpg" alt="3. Nuclear Fission Surface Power" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #38bdf8; border-color: #38bdf888;">MARS CANDIDATE • ARCADIA GLACIER</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🧊</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. Nuclear Fission Surface Power</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Because dust storms can block sunlight for weeks on Mars, NASA selected compact nuclear fission reactors to provide reliable day-and-night electricity for fuel plants and habitats.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/4272bcdf-c119-4b7e-91a3-890ddc89b039.jpg" alt="1. Planet Mars in Numbers" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">1. Planet Mars in Numbers</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              A Martian day (Sol) is 24 hours and 39 minutes, gravity is 38% of Earth's, and its thin carbon-dioxide air lets temperatures drop to -125°C at night.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/curiosity-selfie.jpg" alt="2. Curiosity Rover & Canada's APXS" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">2. Curiosity Rover & Canada's APXS</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              This real selfie was taken by Curiosity in Gale Crater! On its robotic arm sits Canada's APXS spectrometer, which touches rocks to read their chemical elements.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_3_olympus.jpg" alt="3. The Biggest Volcano in the Solar System" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">3. The Biggest Volcano in the Solar System</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Mars's Olympus Mons towers 22 km high—nearly three times taller than Mount Everest—and is wide enough to cover an entire country!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars-2.jpg" alt="4. Rusty Deserts & Ancient Lakes" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">4. Rusty Deserts & Ancient Lakes</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              Mars looks red because its rocks are full of oxidized iron (rust), yet rovers found clay minerals proving Gale Crater once held freshwater lakes.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_5_oxygen_moxie.jpg" alt="5. Making Breathable Oxygen from Mars Air" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">5. Making Breathable Oxygen from Mars Air</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              NASA's toaster-sized MOXIE instrument on Perseverance proved astronauts can suck in Mars's toxic CO2 air and split it into pure oxygen for breathing and rocket fuel!
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+        <div class="lunar-mission-card flashcard-panel filter-general" data-source="NASA Mars Exploration Program, Curiosity RAD & CSA APXS Spectrometer" style="--card-accent: #ff8c42; --card-border: #ff8c42; --card-glow: #ff8c4266; --card-btn-bg: linear-gradient(135deg, #ff8c4299, #ff8c42); cursor: pointer;">
+          <div class="lunar-card-banner" style="height: 200px; display: flex; align-items: center; justify-content: center; background: #030712; padding: 6px;">
+            <img src="/assets/flashcards/mars_6_habitats.jpg" alt="6. 3D-Printed Martian Regolith Homes" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border-radius: 4px;" />
+            <div class="lunar-card-badge" style="color: #ff8c42; border-color: #ff8c4288;">GENERAL MARS SCIENCE</div>
+          </div>
+          <div class="lunar-card-content">
+            <div class="lunar-card-header-row">
+              <div class="lunar-card-title-group">
+                <span class="lunar-card-icon">🔴</span>
+                <span class="lunar-card-title" style="font-size: 1rem;">6. 3D-Printed Martian Regolith Homes</span>
+              </div>
+            </div>
+            <p class="lunar-card-desc" style="font-size: 0.83rem; line-height: 1.5; color: #cbd5e1;">
+              To protect crews from solar storms during 2-year Mars missions, robots will 3D-print thick dome shelters out of Martian soil before astronauts land.
+            </p>
+            <div class="flashcard-click-hint" style="font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; color: #ff8c42; letter-spacing: 0.05em; display: flex; align-items: center; gap: 4px; margin-top: 10px; padding-top: 8px; border-top: 1px dashed rgba(255,255,255,0.1);">
+              <span>🔍</span>
+              <span>CLICK TO VIEW FULLSCREEN &amp; DETAILS</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Flashcard Detail Zoom / Fullscreen Lightbox Modal -->
+  <div id="flashcard-detail-modal" class="flashcard-detail-modal" style="display: none;">
+    <div class="flashcard-detail-backdrop" id="flashcard-detail-backdrop"></div>
+    <div class="flashcard-detail-container">
+      <button class="flashcard-detail-close" id="btn-close-flashcard-detail" title="Close Detailed View (Esc)">✕</button>
+
+      <!-- Left: High-Res Zoomed Image Container -->
+      <div class="flashcard-detail-image-box">
+        <img id="flashcard-detail-img" src="" alt="Zoomed Science Photo" />
+        <div class="flashcard-detail-nav-overlay">
+          <button id="btn-flashcard-prev" class="flashcard-nav-btn" title="Previous Card (←)">◀ PREV</button>
+          <span id="flashcard-detail-counter" class="flashcard-counter-badge">CARD 1 / 21</span>
+          <button id="btn-flashcard-next" class="flashcard-nav-btn" title="Next Card (→)">NEXT ▶</button>
+        </div>
+      </div>
+
+      <!-- Right: Detailed Scientific Metadata & Description -->
+      <div class="flashcard-detail-sidebar">
+        <div class="flashcard-detail-header-row">
+          <span id="flashcard-detail-tag" class="lunar-card-badge" style="position: static; display: inline-block;">LUNAR MISSION 1 • SHACKLETON RIM</span>
+        </div>
+        <h2 id="flashcard-detail-title" class="flashcard-detail-title">1. The Real Shackleton Crater Rim</h2>
+        
+        <div class="flashcard-detail-desc-box">
+          <p id="flashcard-detail-desc" class="flashcard-detail-desc">
+            This real orbital view from NASA's Lunar Reconnaissance Orbiter shows the Moon's South Pole...
+          </p>
+        </div>
+
+        <div class="flashcard-detail-science-box">
+          <div class="flashcard-source-title">🔬 NASA / CSA Scientific Reference</div>
+          <div id="flashcard-detail-source" class="flashcard-source-text">
+            Lunar Reconnaissance Orbiter (LRO) Narrow Angle Camera &amp; LOLA Topography
+          </div>
+        </div>
+
+        <div class="flashcard-detail-footer">
+          <button id="btn-flashcard-close-bottom" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+            ✕ CLOSE DETAILED VIEW
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HUD In-Game Layer -->
+  <div id="hud" class="ui-layer">
+    <!-- Top Bar -->
+    <div id="hud-topbar">
+      <div class="hud-top-left">
+        <button id="btn-pause" class="hud-pause-btn" title="Pause System (Esc)">⏸</button>
+        <div class="hud-location">
+          <div class="hud-location-dot"></div>
+          <span id="hud-location-name" class="hud-location-name">SANDBOX PROVING GROUND</span>
+        </div>
+      </div>
+
+      <div class="hud-top-center">
+        <div id="hud-mode-badge" class="hud-mode-badge">EVA SUIT MODE</div>
+        <div id="hud-tradeoff-badge" class="hud-tradeoff-badge" title="Active Outpost Power Distribution Mode [Hotkey: T]">⚖️ BALANCED OUTPOST</div>
+      </div>
+
+      <div class="hud-top-right">
+        <button id="btn-open-tradeoffs" class="hud-action-pill pill-amber" title="Open Outpost Power & Life Support Tradeoff Console [Hotkey: T]">
+          <span>⚖️</span> <span>POWER TRADEOFFS</span>
+        </button>
+        <button id="btn-dsn-ping" class="hud-action-pill pill-cyan" title="Test Deep Space Network speed-of-light communication delay with Earth">
+          <span>📡</span> <span>DSN PING</span>
+        </button>
+        <button id="btn-lander-action" class="hud-action-pill pill-cyan" title="Launch or Land the Spaceship Exploration Module [Hotkey: L]">
+          <span>🚀</span> <span id="btn-lander-action-label">LAUNCH LANDER</span>
+        </button>
+        <button id="btn-open-logbook" class="hud-action-pill pill-cyan" title="Open Expedition Scientific Logbook [Hotkey: B]">
+          <span>📖</span> <span>LOGBOOK</span>
+        </button>
+        <div class="hud-sol-time">
+          <span id="hud-sol" class="hud-sol">SOL 01</span>
+          <span id="hud-clock">08:14 UTC</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Character Badge -->
+    <div id="hud-character">
+      <div class="hud-char-top">
+        <div id="hud-char-portrait" class="hud-char-portrait">👩‍🚀</div>
+        <div class="hud-char-info">
+          <div id="hud-char-name" class="hud-char-name">Alex Morgan</div>
+          <div id="hud-char-role" class="hud-char-role">Mission Commander</div>
+          <div class="hud-char-status">
+            <div class="hud-char-status-dot"></div>
+            <span id="hud-char-status-text">VITALS NOMINAL</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radiation Dosimeter Telemetry (MSL RAD & DONKI) -->
+      <div id="hud-rad-badge" class="hud-rad-badge rad-green" title="Dosimeter telemetry (MSL RAD / DONKI data). Inside lander gives ~85% shielding.">
+        <div class="rad-header">
+          <span class="rad-symbol">☢️</span>
+          <span class="rad-title">DOSIMETER</span>
+          <span id="rad-shield-status" class="rad-shield-status">☢ EVA</span>
+        </div>
+        <div class="rad-data">
+          <div class="rad-item">
+            <span class="rad-label">RATE</span>
+            <span class="rad-num"><span id="rad-rate-value">0.00</span> <span class="rad-unit">µGy/h</span></span>
+          </div>
+          <div class="rad-item">
+            <span class="rad-label">DOSE</span>
+            <span class="rad-num"><span id="rad-dose-value">0.0</span> <span class="rad-unit">µGy</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Deep Space Network Speed-of-Light Delay Widget -->
+      <div id="hud-dsn-widget" class="hud-dsn-widget" title="Speed-of-Light radio transmission delay between Earth and Expedition">
+        <div class="dsn-widget-header">
+          <span class="dsn-widget-icon">📡</span>
+          <span class="dsn-widget-title">DSN TELEMETRY</span>
+          <span id="dsn-signal-status" class="dsn-signal-status online">ACTIVE</span>
+        </div>
+        <div class="dsn-widget-data">
+          <div class="dsn-item">
+            <span class="dsn-label">LIGHT DELAY</span>
+            <span id="dsn-latency-display" class="dsn-num">14m 24s</span>
+          </div>
+          <div class="dsn-item">
+            <span class="dsn-label">STATUS</span>
+            <span id="dsn-mode-display" class="dsn-status-text">AUTONOMOUS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Physical Floating Decision & Level Impact Container -->
+    <div id="floating-consequence-container" class="floating-consequence-container"></div>
+
+    <!-- Resource Telemetry Panel -->
+    <div id="hud-resources">
+      <!-- Oxygen -->
+      <div id="res-o2" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">🫁</span> OXYGEN (O₂)</span>
+          <span id="val-o2" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-o2" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Water -->
+      <div id="res-water" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">💧</span> WATER (H₂O)</span>
+          <span id="val-water" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-water" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Food Rations (NASA HRP Caloric Nutrition Standard) -->
+      <div id="res-food" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">🥗</span> FOOD RATIONS</span>
+          <span id="val-food" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-food" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Power -->
+      <div id="res-power" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">⚡</span> BASE POWER</span>
+          <span id="val-power" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-power" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Rover Battery -->
+      <div id="res-rover" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">🔋</span> ROVER CELL</span>
+          <span id="val-rover" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-rover" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Crew Condition -->
+      <div id="res-crew" class="resource-item">
+        <div class="resource-row">
+          <span class="resource-label"><span class="resource-icon">❤️</span> CREW HEALTH</span>
+          <span id="val-crew" class="resource-value">100%</span>
+        </div>
+        <div class="resource-bar-track">
+          <div id="bar-crew" class="resource-bar-fill safe" style="width: 100%;"></div>
+        </div>
+      </div>
+
+      <!-- Mission Elapsed Time -->
+      <div class="hud-time-section">
+        <span class="hud-time-label">MISSION TIME</span>
+        <span id="hud-mission-time">00:00:00</span>
+      </div>
+    </div>
+
+    <!-- Tactical Radar & Waypoint Navigation System -->
+    <div id="hud-nav-container">
+      <!-- Active Waypoint Telemetry Card -->
+      <div id="hud-waypoint-card" title="Click to open Tactical Orbital Map [Hotkey: M]">
+        <div class="waypoint-header">
+          <span class="waypoint-badge">WAYPOINT</span>
+          <span id="waypoint-bearing" class="waypoint-bearing">BRG 000°</span>
+        </div>
+        <div class="waypoint-body">
+          <div id="waypoint-arrow" class="waypoint-arrow" title="Relative Heading to Waypoint">⬆</div>
+          <div class="waypoint-info">
+            <div id="waypoint-title" class="waypoint-title">Locating Target...</div>
+            <div class="waypoint-metrics">
+              <span id="waypoint-distance" class="waypoint-distance">-- m</span>
+              <span id="waypoint-status" class="waypoint-status">EN ROUTE</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radar Screen -->
+      <div id="hud-minimap" title="Click to open Tactical Orbital Map [M]">
+        <div class="radar-rings">
+          <div class="radar-ring ring-outer"></div>
+          <div class="radar-ring ring-mid"></div>
+          <div class="radar-ring ring-inner"></div>
+          <div class="radar-crosshair-h"></div>
+          <div class="radar-crosshair-v"></div>
+          <div class="radar-sweep"></div>
+        </div>
+        <div class="radar-cardinal cardinal-n">N</div>
+        <div class="radar-cardinal cardinal-s">S</div>
+        <div class="radar-cardinal cardinal-e">E</div>
+        <div class="radar-cardinal cardinal-w">W</div>
+
+        <!-- Radar Ring Distance Scale Markers -->
+        <div class="radar-scale-mark mark-inner" id="radar-scale-inner">50m</div>
+        <div class="radar-scale-mark mark-mid" id="radar-scale-mid">100m</div>
+        <div class="radar-scale-mark mark-outer" id="radar-scale-outer">150m</div>
+        
+        <!-- Dynamic Target / Base Blips Container -->
+        <div id="minimap-markers"></div>
+
+        <!-- Player Directional Marker -->
+        <div id="minimap-player" class="minimap-player-marker">
+          <div id="minimap-player-arrow" class="minimap-player-heading">▲</div>
+        </div>
+
+        <div class="radar-footer">
+          <span id="radar-range-label">MAP [M]</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Hint Controls -->
+    <div id="hud-hints">
+      <div class="hint-item"><span class="hint-key">WASD</span> Move</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">Arrows / Drag</span> Look Around</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">V</span> 1st/3rd View</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">Space</span> Jump</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">L</span> Lander Fly</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">R</span> Rover</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">E</span> Inspect</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">T</span> Tradeoffs</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">Scroll / + −</span> Zoom</div>
+      <span class="hint-sep">|</span>
+      <div class="hint-item"><span class="hint-key">Shift</span> Sprint</div>
+    </div>
+
+    <!-- On-Screen Environment Zoom & Camera Vision Controls -->
+    <div id="hud-zoom-controls">
+      <button id="btn-view-toggle" class="hud-zoom-btn" title="Toggle 1st/3rd Person Vision (V)" aria-label="Toggle Vision Mode">
+        <span class="zoom-btn-icon">👁️</span>
+        <span class="zoom-btn-text">VIEW [V]</span>
+      </button>
+      <div class="hud-camera-dpad" title="Camera Angle / Vision Direction Controls">
+        <button id="btn-cam-up" class="hud-cam-btn" title="Tilt Look Up (↑ Arrow)" aria-label="Look Up">▲</button>
+        <div class="hud-cam-row">
+          <button id="btn-cam-left" class="hud-cam-btn" title="Turn Look Left (← Arrow)" aria-label="Turn Left">◀</button>
+          <button id="btn-cam-reset" class="hud-cam-btn hud-cam-center" title="Reset View Front" aria-label="Reset Camera">⟲</button>
+          <button id="btn-cam-right" class="hud-cam-btn" title="Turn Look Right (→ Arrow)" aria-label="Turn Right">▶</button>
+        </div>
+        <button id="btn-cam-down" class="hud-cam-btn" title="Tilt Look Down (↓ Arrow)" aria-label="Look Down">▼</button>
+      </div>
+      <button id="btn-zoom-in" class="hud-zoom-btn" title="Zoom In (Scroll Up / +)" aria-label="Zoom In">
+        <span class="zoom-btn-icon">➕</span>
+        <span class="zoom-btn-text">ZOOM IN</span>
+      </button>
+      <button id="btn-zoom-out" class="hud-zoom-btn" title="Zoom Out (Scroll Down / −)" aria-label="Zoom Out">
+        <span class="zoom-btn-icon">➖</span>
+        <span class="zoom-btn-text">ZOOM OUT</span>
+      </button>
+    </div>
+
+    <!-- Reticle Crosshair -->
+    <div id="hud-crosshair">
+      <div class="crosshair-h"></div>
+      <div class="crosshair-v"></div>
+    </div>
+  </div>
+
+  <!-- Interaction Prompt Popup -->
+  <div id="interaction-prompt">
+    <div class="interaction-prompt-inner">
+      <span id="prompt-key" class="interaction-key">E</span>
+      <span id="prompt-label" class="interaction-label">SCAN TARGET</span>
+    </div>
+  </div>
+
+  <!-- Dialogue Panel -->
+  <div id="dialogue-panel" class="ui-layer">
+    <div class="dialogue-inner">
+      <div class="dialogue-portrait-wrap">
+        <div id="dialogue-portrait" class="dialogue-portrait alex-portrait">👩‍🚀</div>
+        <div id="dialogue-speaker-label" class="dialogue-speaker-label alex-label">Commander</div>
+      </div>
+
+      <div class="dialogue-content">
+        <div class="dialogue-speaker-name alex-name">
+          <span id="dialogue-speaker-name">Alex Morgan</span>
+          <span id="dialogue-speaker-role" class="dialogue-speaker-role">Mission Commander</span>
+        </div>
+
+        <div id="dialogue-text"></div>
+
+        <div id="dialogue-choices"></div>
+
+        <div class="dialogue-controls">
+          <button id="dialogue-skip" type="button">Skip Sequence</button>
+          <button id="dialogue-next" type="button">
+            CONTINUE <span class="next-key-hint">␣</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Science Scanner Side Panel -->
+  <div id="science-panel" class="side-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">🔬</span>
+        <span>SCIENCE TELEMETRY</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-science">✕</button>
+    </div>
+    <div class="panel-body">
+      <div>
+        <h2 id="science-target-title" class="science-target-name">Geological Sample #1</h2>
+        <div id="science-target-sub" class="science-target-type">SURFACE SPECTROMETRY</div>
+      </div>
+
+      <div id="science-metrics" class="science-data-grid">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div class="science-explain">
+        <div class="science-explain-title">
+          <span>💡</span> <span>MISSION INSIGHT (KIDS 7-12)</span>
+        </div>
+        <p id="science-simple-text" class="science-explain-text">
+          Scanning target for thermal and neutron signatures...
+        </p>
+        <p id="science-adv-text" class="science-explain-adv">
+          Scientific data provenance verification...
+        </p>
+      </div>
+
+      <button id="btn-record-finding" class="science-record-btn">
+        <span>💾</span> RECORD FINDING IN LOGBOOK
+      </button>
+    </div>
+  </div>
+
+  <!-- Expedition Scientific Logbook Modal/Panel -->
+  <div id="logbook-panel" class="side-panel logbook-panel">
+    <div class="panel-header logbook-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">📖</span>
+        <span>EXPEDITION SCIENTIFIC LOGBOOK</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-logbook">✕</button>
+    </div>
+    <div class="panel-body logbook-body">
+      <div class="logbook-summary-bar">
+        <div class="logbook-stat">
+          <span class="logbook-stat-num" id="logbook-count">0</span>
+          <span class="logbook-stat-label">DISCOVERIES LOGGED</span>
+        </div>
+        <div class="logbook-stat">
+          <span class="logbook-stat-num" id="logbook-score">0</span>
+          <span class="logbook-stat-label">SCIENCE POINTS</span>
+        </div>
+        <div class="logbook-stat">
+          <span class="logbook-stat-num" id="logbook-samples">0</span>
+          <span class="logbook-stat-label">SAMPLES SECURED</span>
+        </div>
+      </div>
+
+      <div class="logbook-filter-tabs">
+        <button class="logbook-tab active" data-filter="all">ALL OBSERVATIONS</button>
+        <button class="logbook-tab" data-filter="measured">NASA MEASURED</button>
+        <button class="logbook-tab" data-filter="calculated">CALCULATED</button>
+        <button class="logbook-tab" data-filter="tradeoffs">TRADEOFF CHOICES</button>
+      </div>
+
+      <div id="logbook-entries-list" class="logbook-entries-list">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Character Roster Modal/Panel -->
+  <div id="character-info-panel" class="side-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">👨‍🚀</span>
+        <span>EXPEDITION CREW ROSTER</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-chars">✕</button>
+    </div>
+    <div class="panel-body">
+      <div id="char-roster-list" class="char-cards">
+        <!-- Rendered dynamically from characters.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings & Accessibility Panel -->
+  <div id="settings-panel" class="side-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">⚙️</span>
+        <span>SETTINGS & AUDIO</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-settings">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="settings-section-title">Sound & Atmosphere</div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Music Volume</div>
+          <div class="settings-label-sub">Ambient cinematic soundscapes</div>
+        </div>
+        <input type="range" id="vol-music" class="settings-slider" min="0" max="100" value="50">
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Sound Effects</div>
+          <div class="settings-label-sub">Suit telemetry, rover motor, clicks</div>
+        </div>
+        <input type="range" id="vol-sfx" class="settings-slider" min="0" max="100" value="70">
+      </div>
+
+      <div class="settings-section-title">Educational Accessibility</div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Subtitles</div>
+          <div class="settings-label-sub">Always show dialogue captions</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-subtitles" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div class="settings-label">Color-Safe HUD</div>
+          <div class="settings-label-sub">High contrast badges for alerts</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="toggle-colorblind">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-danger-zone">
+        <div class="settings-label" style="color: var(--status-danger);">Local Save Data</div>
+        <div class="settings-label-sub" style="margin-bottom: 8px;">Reset recorded science observations and progress on this browser.</div>
+        <button id="btn-reset-save" class="reset-progress-btn">CLEAR LOCAL SAVE DATA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tactical Orbital Map Modal (Press M or Click Radar) -->
+  <div id="tactical-map-modal" class="side-panel tactical-map-panel">
+    <div class="panel-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">🗺️</span>
+        <span>TACTICAL ORBITAL MAP</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-map">✕</button>
+    </div>
+    <div class="panel-body tactical-map-body">
+      <div class="tactical-map-wrapper">
+        <canvas id="tactical-map-canvas" width="560" height="560"></canvas>
+        <div class="tactical-map-overlay-info">
+          <span id="tactical-map-location">SECTOR: SURFACE PROVING GROUND</span>
+          <span class="tactical-hotkey-hint">TOGGLE: [M]</span>
+        </div>
+      </div>
+      <div class="tactical-map-sidebar">
+        <div class="tactical-legend-title">EXPEDITION OBJECTIVES</div>
+        <div id="tactical-waypoint-list" class="tactical-waypoint-list">
+          <!-- Populated dynamically -->
+        </div>
+        <div class="tactical-map-legend">
+          <div class="legend-row"><span class="legend-icon legend-player">▲</span> <span>Player Current Position</span></div>
+          <div class="legend-row"><span class="legend-icon legend-base">⬡</span> <span>Frontier Base Outpost</span></div>
+          <div class="legend-row"><span class="legend-icon legend-active">🎯</span> <span>Active Waypoint Target</span></div>
+          <div class="legend-row"><span class="legend-icon legend-target">◆</span> <span>Investigation Beacon</span></div>
+          <div class="legend-row"><span class="legend-icon legend-done">✓</span> <span>Completed Objective</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Deep Space Network Speed-of-Light Communication Banner -->
+  <div id="dsn-uplink-banner" class="dsn-banner">
+    <div class="dsn-inner">
+      <div class="dsn-pulse-icon">📡</div>
+      <div class="dsn-content">
+        <div id="dsn-uplink-text" class="dsn-text"><strong>[DSN GOLDSTONE ANTENNA]</strong> UPLINKING TELEMETRY TO HOUSTON...</div>
+        <div class="dsn-bar-wrap">
+          <div id="dsn-uplink-progress" class="dsn-bar-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Planetary Emergency Storm Decision Modal -->
+  <div id="storm-emergency-modal" class="side-panel storm-emergency-panel">
+    <div class="panel-header storm-header">
+      <div class="panel-title">
+        <span class="panel-title-icon">🚨</span>
+        <span>PLANETARY EMERGENCY: STORM CRISIS</span>
+      </div>
+      <button class="panel-close-btn" id="btn-close-storm">✕</button>
+    </div>
+    <div class="panel-body storm-body">
+      <div id="storm-location-label" class="storm-badge">CRITICAL ALERT: JEZERO CRATER DELTA</div>
+      <div class="storm-brief">
+        <p><strong>URGENT TELEMETRY:</strong> NASA atmospheric sensors indicate a massive regional dust storm has formed within minutes! Gale-force winds of 38 m/s with abrasive regolith particles are descending on your sector.</p>
+        <p>Solar array efficiency is plunging, and external suit exposure carries severe hazard risks. <strong>As Expedition Commander, decide your course of action immediately:</strong></p>
+      </div>
+
+      <div class="storm-decisions">
+        <button id="btn-storm-shelter" class="storm-choice-card choice-shelter">
+          <div class="choice-icon">🏠</div>
+          <div class="choice-info">
+            <div class="choice-title">1. RETREAT TO PRESSURIZED LANDER CABIN</div>
+            <div class="choice-desc">Sound evacuation alarm. Astronaut shelters inside the lander airlock.</div>
+            <div class="choice-impacts">
+              <span class="impact-badge safe">O₂ & HEALTH AT 100%</span>
+              <span class="impact-badge warning">SOLAR POWER -12%</span>
+            </div>
+          </div>
+        </button>
+
+        <button id="btn-storm-sample" class="storm-choice-card choice-sample">
+          <div class="choice-icon">🔬</div>
+          <div class="choice-info">
+            <div class="choice-title">2. DEPLOY ROVER COVERS & RECOVER DRILL CORE</div>
+            <div class="choice-desc">Brave 38 m/s winds to secure critical hydrous clay sample before it is buried in dust!</div>
+            <div class="choice-impacts">
+              <span class="impact-badge reward">+350 SCIENCE PTS</span>
+              <span class="impact-badge danger">O₂ -22% | HEALTH -14%</span>
+            </div>
+          </div>
+        </button>
+
+        <button id="btn-storm-power" class="storm-choice-card choice-power">
+          <div class="choice-icon">⚡</div>
+          <div class="choice-info">
+            <div class="choice-title">3. DIVERT AUXILIARY FUEL CELLS TO LIFE-SUPPORT</div>
+            <div class="choice-desc">Divert backup hydrogen cells directly into base scrubbers and shields; rover enters sleep mode.</div>
+            <div class="choice-impacts">
+              <span class="impact-badge safe">BASE POWER AT 95%</span>
+              <span class="impact-badge warning">ROVER CELL -25%</span>
+            </div>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-Game Pause Menu -->
+  <div id="pause-panel">
+    <div class="pause-card glass-panel">
+      <div class="pause-title">MISSION PAUSED</div>
+      <div class="pause-nav">
+        <button id="btn-resume" class="btn btn-primary">▶ RESUME EXPEDITION</button>
+        <button id="btn-pause-logbook" class="btn btn-secondary">📖 VIEW EXPEDITION LOGBOOK</button>
+        <button id="btn-pause-settings" class="btn btn-secondary">⚙️ SETTINGS</button>
+        <button id="btn-pause-menu" class="btn btn-ghost">🏠 RETURN TO MAIN MENU</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Touch Controls Layer (Phones / Tablets) -->
+  <div id="mobile-controls">
+    <div id="joystick-zone">
+      <div id="joystick-base"></div>
+      <div id="joystick-thumb">
+        <span class="joystick-dirs">🕹️</span>
+      </div>
+    </div>
+
+    <div id="camera-zone"></div>
+
+    <div id="mobile-actions">
+      <button id="btn-mobile-jump" class="mobile-action-btn btn-jump-mobile" data-label="JUMP">🦘</button>
+      <button id="btn-mobile-lander" class="mobile-action-btn btn-lander-mobile" data-label="LANDER">🚀</button>
+      <button id="btn-mobile-interact" class="mobile-action-btn btn-interact" data-label="INSPECT">🔍</button>
+      <button id="btn-mobile-rover" class="mobile-action-btn btn-rover-toggle" data-label="ROVER">🚜</button>
+      <button id="btn-mobile-pause" class="mobile-action-btn btn-pause-mobile" data-label="PAUSE">⏸</button>
+    </div>
+  </div>
+
+  <!-- Game Bootstrap Script -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

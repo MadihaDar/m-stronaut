@@ -1,0 +1,276 @@
+/* ============================================================
+   FRONTIER: MISSION ACADEMY — Dialogue System
+   ============================================================ */
+
+#dialogue-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity var(--t-mid) var(--ease-out), transform var(--t-mid) var(--ease-out), visibility var(--t-mid);
+  padding: var(--sp-4);
+}
+#dialogue-panel.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+#dialogue-panel.visible * {
+  pointer-events: auto;
+}
+#dialogue-panel:not(.visible),
+#dialogue-panel:not(.visible) * {
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+.dialogue-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: var(--sp-4);
+  align-items: flex-end;
+  padding: var(--sp-4) var(--sp-5);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--r-xl) var(--r-xl) var(--r-lg) var(--r-lg);
+  backdrop-filter: blur(var(--panel-blur));
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  box-shadow: 0 -4px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(74,158,255,0.05);
+  position: relative;
+}
+
+/* ── Character Portrait ── */
+.dialogue-portrait-wrap {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-1);
+}
+.dialogue-portrait {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 2px solid var(--panel-border);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  background: var(--space-mid);
+  transition: border-color var(--t-mid);
+  flex-shrink: 0;
+  position: relative;
+}
+.dialogue-portrait.alex-portrait  { border-color: var(--alex-color);  background: radial-gradient(circle at 40% 30%, rgba(74,158,255,0.3), rgba(26,35,64,0.8)); }
+.dialogue-portrait.leo-portrait   { border-color: var(--leo-color);   background: radial-gradient(circle at 40% 30%, rgba(255,140,66,0.3), rgba(26,35,64,0.8)); }
+.dialogue-portrait.maya-portrait  { border-color: var(--maya-color);  background: radial-gradient(circle at 40% 30%, rgba(61,214,204,0.3), rgba(26,35,64,0.8)); }
+.dialogue-portrait.noah-portrait  { border-color: var(--noah-color);  background: radial-gradient(circle at 40% 30%, rgba(66,217,148,0.3), rgba(26,35,64,0.8)); }
+.dialogue-portrait.orbit-portrait { border-color: var(--orbit-color); background: radial-gradient(circle at 50% 50%, rgba(224,232,255,0.2), rgba(26,35,64,0.9)); }
+
+/* ORBIT portrait special: spinning ring */
+.dialogue-portrait.orbit-portrait::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--orbit-color);
+  border-bottom-color: var(--blue-bright);
+  animation: orbit-spin 3s linear infinite;
+}
+
+.dialogue-speaker-label {
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+}
+.dialogue-speaker-label.alex-label  { color: var(--alex-color); }
+.dialogue-speaker-label.leo-label   { color: var(--leo-color); }
+.dialogue-speaker-label.maya-label  { color: var(--maya-color); }
+.dialogue-speaker-label.noah-label  { color: var(--noah-color); }
+.dialogue-speaker-label.orbit-label { color: var(--orbit-color); }
+
+/* ── Dialogue Content ── */
+.dialogue-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  min-width: 0;
+}
+
+.dialogue-speaker-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+.dialogue-speaker-role {
+  font-size: 0.72rem;
+  font-weight: 400;
+  opacity: 0.6;
+  margin-left: var(--sp-2);
+}
+.dialogue-speaker-name.alex-name  { color: var(--alex-color); }
+.dialogue-speaker-name.leo-name   { color: var(--leo-color); }
+.dialogue-speaker-name.maya-name  { color: var(--maya-color); }
+.dialogue-speaker-name.noah-name  { color: var(--noah-color); }
+.dialogue-speaker-name.orbit-name { color: var(--orbit-color); }
+
+#dialogue-text {
+  font-family: var(--font-body);
+  font-size: clamp(0.88rem, 2vw, 1rem);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 2.5em;
+}
+/* Typewriter cursor */
+#dialogue-text::after {
+  content: '▋';
+  display: inline;
+  color: var(--blue-bright);
+  animation: pulse-warning 0.8s step-end infinite;
+  margin-left: 2px;
+}
+#dialogue-text.typing-done::after { display: none; }
+
+/* ── ORBIT data badge ── */
+.orbit-data-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px 8px;
+  background: rgba(224,232,255,0.1);
+  border: 1px solid rgba(224,232,255,0.2);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--orbit-color);
+}
+
+/* ── Choice Buttons ── */
+#dialogue-choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.dialogue-choice-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  background: rgba(74,158,255,0.06);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--r-md);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all var(--t-mid) var(--ease-out);
+  text-align: left;
+}
+.dialogue-choice-btn:hover {
+  background: rgba(74,158,255,0.15);
+  border-color: var(--blue-bright);
+  transform: translateX(4px);
+}
+.choice-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--space-light);
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: all var(--t-mid);
+}
+.dialogue-choice-btn:hover .choice-number {
+  background: var(--blue-bright);
+  color: var(--space-black);
+}
+
+/* ── Next / Continue button ── */
+.dialogue-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+}
+#dialogue-next {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  background: rgba(74,158,255,0.12);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--r-md);
+  color: var(--text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all var(--t-mid);
+  pointer-events: auto;
+}
+#dialogue-next:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+  background: rgba(74,158,255,0.18);
+}
+#dialogue-next:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.next-key-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px; height: 20px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+/* ── Skip button ── */
+#dialogue-skip {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--sp-1) var(--sp-2);
+  transition: color var(--t-mid);
+  pointer-events: auto;
+}
+#dialogue-skip:hover { color: var(--text-secondary); }
+
+/* ── Science data inline tag ── */
+.science-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  font-weight: 600;
+}
+.science-tag.measured    { background: rgba(66,217,148,0.15); color: var(--status-safe); border: 1px solid rgba(66,217,148,0.3); }
+.science-tag.calculated  { background: rgba(74,158,255,0.15); color: var(--blue-bright); border: 1px solid rgba(74,158,255,0.3); }
+.science-tag.model       { background: rgba(255,215,0,0.12);  color: var(--gold-bright); border: 1px solid rgba(255,215,0,0.25); }
+.science-tag.story       { background: rgba(255,140,66,0.12); color: var(--orange-bright); border: 1px solid rgba(255,140,66,0.25); }

@@ -1,0 +1,15 @@
+{
+  "dataset": "NASA DONKI (Space Weather Database Of Notifications, Knowledge, Information)",
+  "eventsCoverage": "October 2026 Space Weather Observations",
+  "solarFlares": [],
+  "coronalMassEjections": [],
+  "missionAlertScenario": {
+    "event": "AR 14546 Solar Eruptive Flare & Associated Halo CME",
+    "timestamp": "2026-10-04T07:24Z",
+    "classification": "B9.3 Eruptive Flare + Directed Plasma Front",
+    "predictedTransitTimeHours": 34.5,
+    "warningWindowHours": 1.5,
+    "operationalImpact": "Unshielded astronauts on the lunar surface are exposed to high energetic proton fluxes. Mission protocol requires immediate abort of non-essential EVAs and return to regolith-shielded outpost habitat.",
+    "scientificIntegrityNote": "This gameplay alert is a fictional training simulation inspired by real NASA DONKI solar event metadata from October 2026. Solar flare class records do not directly calculate exact human dose without secondary transport modeling."
+  }
+}

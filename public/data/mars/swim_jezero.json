@@ -1,0 +1,46 @@
+{
+  "dataset": "Subsurface Water Ice Mapping on Mars (SWIM)",
+  "instrument": "MRO SHARAD / Mars Odyssey GRS / MRO HiRISE / MGS TES Synthesis",
+  "referencePoint": {
+    "lon": 77.5,
+    "lat": 18.4,
+    "region": "Jezero Crater Region (Regional check point, NOT confirmed human base)"
+  },
+  "nominalPixelScaleM": 2963.735,
+  "coordinateSystem": "Mars 2000 Equicylindrical (ESRI:103885)",
+  "coverage": "60\u00b0S to 60\u00b0N, global longitude",
+  "layers": [
+    {
+      "id": "Ci_0_1",
+      "name": "Composite Ice Consistency (0\u20131 m depth)",
+      "productFile": "SWIM4MIM_Ci_0_1.tif",
+      "referenceValue": -0.190625,
+      "interpretation": "Negative consistency value indicates geomorphological and thermal evidence does NOT support shallow ice in top 1 meter at this latitude.",
+      "drillFeasibility": "Very Low (Dry surface desiccation zone)"
+    },
+    {
+      "id": "Ci_1_5",
+      "name": "Composite Ice Consistency (1\u20135 m depth)",
+      "productFile": "SWIM4MIM_Ci_1_5.tif",
+      "referenceValue": 0.0,
+      "interpretation": "Neutral consistency (0.0). Does NOT prove ice is absent; indicates radar dielectric reflections are inconclusive or below detection threshold.",
+      "drillFeasibility": "Moderate (Requires deep exploration probe)"
+    },
+    {
+      "id": "Ci_5_plus",
+      "name": "Composite Ice Consistency (> 5 m depth)",
+      "productFile": "SWIM4MIM_Ci_5.tif",
+      "referenceValue": 0.0,
+      "interpretation": "Neutral consistency (0.0). Deep radar soundings indicate basalt bedrock and layered sediments.",
+      "drillFeasibility": "Low / Deep Core Requirement"
+    },
+    {
+      "id": "OriginalCi",
+      "name": "Original Composite Consistency",
+      "productFile": "SWIM4MIM_OriginalCi.tif",
+      "referenceValue": -0.122,
+      "interpretation": "Baseline regional consistency score across earlier composite iterations."
+    }
+  ],
+  "mandatoryIntegrityRule": "SWIM values are evidence-consistency indices, NOT water percentages, extraction rates, or guaranteed litres. Extraction in the game is a simulated engineering mechanic."
+}

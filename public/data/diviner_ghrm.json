@@ -1,0 +1,39 @@
+{
+  "dataset": "Diviner GHRM (Global High-Resolution Mapping)",
+  "coverage": "70\u00b0S to 70\u00b0N, global longitude",
+  "products": [
+    {
+      "name": "DGHRM_TB6_M_70S70N",
+      "channel": "Channel 6 (13-23 \u00b5m)",
+      "target": "Silicate thermal emission"
+    },
+    {
+      "name": "DGHRM_TB7_M_70S70N",
+      "channel": "Channel 7 (25-41 \u00b5m)",
+      "target": "Low-temperature thermal band"
+    },
+    {
+      "name": "DGHRM_TB8_M_70S70N",
+      "channel": "Channel 8 (50-100 \u00b5m)",
+      "target": "Nighttime cryogenic thermal band"
+    },
+    {
+      "name": "DGHRM_TB9_M_70S70N",
+      "channel": "Channel 9 (100-400 \u00b5m)",
+      "target": "Far-infrared cryogenic band"
+    },
+    {
+      "name": "DGHRM_TBOL_M_70S70N",
+      "channel": "Bolometric Brightness Temperature",
+      "target": "Total surface radiative emission"
+    },
+    {
+      "name": "DGHRM_TBOL_ANOM_70S70N",
+      "channel": "Bolometric Thermal Anomaly",
+      "target": "Anomalous thermal inertia / rock abundance signatures"
+    }
+  ],
+  "unit": "Kelvin (K)",
+  "resolution": "128 pixels/degree",
+  "scienceContext": "GHRM products map fine-scale thermal variations across lunar maria and highlands, highlighting impact melt sheets and blocky ejecta blankets that stay warm after sunset due to high thermal inertia."
+}

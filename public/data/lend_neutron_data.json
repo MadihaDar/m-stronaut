@@ -1,0 +1,57 @@
+{
+  "dataset": "LEND (Lunar Exploration Neutron Detector)",
+  "products": [
+    "LEND_EDR_HK_20260614",
+    "LEND_EDR_SCI_20260614",
+    "LEND_RDR_CHK_20260614"
+  ],
+  "observationDate": "14 June 2026",
+  "instrumentHost": "LUNAR RECONNAISSANCE ORBITER (LRO)",
+  "detectors": [
+    {
+      "name": "CSETN 1-4",
+      "type": "Collimated Sensors for Epithermal Neutrons",
+      "sensitiveTo": "Subsurface Hydrogen"
+    },
+    {
+      "name": "SETN",
+      "type": "Uncollimated Sensor for Epithermal Neutrons",
+      "sensitiveTo": "Wide-angle lunar neutron flux"
+    },
+    {
+      "name": "STN",
+      "type": "Thermal Neutron Sensor",
+      "sensitiveTo": "Thermal neutrons modulated by iron/titanium"
+    },
+    {
+      "name": "RSTN",
+      "type": "Fast Neutron Sensor",
+      "sensitiveTo": "Galactic cosmic ray interaction rate"
+    }
+  ],
+  "verifiedObservations": [
+    {
+      "id": "LEND_OBS_001",
+      "lat": -89.77,
+      "lon": 124.5,
+      "epithermal_counts_per_sec": 3.82,
+      "reference_baseline_cps": 5.4,
+      "suppression_ratio": 0.707,
+      "normalized_z_score": -2.45,
+      "target": "Shackleton Crater Floor (Permanently Shadowed)",
+      "scientificMeaning": "Epithermal neutron count rate is suppressed by ~29.3% relative to the sunlit reference highlands. Consistent with hydrogen enrichment (water ice equivalent hydrogen WEH ~0.8% wt)."
+    },
+    {
+      "id": "LEND_OBS_002",
+      "lat": -86.5,
+      "lon": 45.2,
+      "epithermal_counts_per_sec": 5.38,
+      "reference_baseline_cps": 5.4,
+      "suppression_ratio": 0.996,
+      "normalized_z_score": -0.05,
+      "target": "Sunlit Highland Plateau",
+      "scientificMeaning": "Normal baseline neutron flux. No detectable hydrogen enhancement in the top 1 meter of regolith."
+    }
+  ],
+  "mandatoryScientificRule": "LEND measures neutron suppression caused by hydrogen atoms slowing down cosmic ray neutrons. It does NOT directly photograph or detect water ice molecules. Other hydrogen species (solar wind implanted protons) can also contribute."
+}

@@ -1,0 +1,434 @@
+/* ============================================================
+   FRONTIER: MISSION ACADEMY — Global Design System
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap');
+
+/* ── CSS Custom Properties ── */
+:root {
+  /* Space color palette */
+  --space-black:   #030609;
+  --space-deep:    #07091a;
+  --space-dark:    #0d1424;
+  --space-mid:     #1a2340;
+  --space-light:   #2a3560;
+  --space-muted:   #3a4870;
+
+  /* Accent colors */
+  --blue-bright:   #4a9eff;
+  --blue-mid:      #2a7edf;
+  --blue-dim:      #1a4e8f;
+  --blue-glow:     rgba(74,158,255,0.35);
+  --orange-bright: #ff8c42;
+  --orange-dim:    rgba(255,140,66,0.4);
+  --teal-bright:   #3dd6cc;
+  --green-bright:  #42d994;
+  --gold-bright:   #ffd700;
+  --gold-dim:      rgba(255,215,0,0.3);
+
+  /* Character accent colors */
+  --alex-color:   #4a9eff;
+  --leo-color:    #ff8c42;
+  --maya-color:   #3dd6cc;
+  --noah-color:   #42d994;
+  --orbit-color:  #e0e8ff;
+
+  /* Text hierarchy */
+  --text-bright:     #ffffff;
+  --text-primary:    #e8f0fe;
+  --text-secondary:  #8899bb;
+  --text-dim:        #4a5a7a;
+  --text-disabled:   #2a3550;
+
+  /* Status */
+  --status-safe:     #42d994;
+  --status-warning:  #ffb347;
+  --status-danger:   #ff6644;
+  --status-critical: #ff2222;
+
+  /* Glass panels */
+  --panel-bg:        rgba(7, 9, 26, 0.88);
+  --panel-bg-light:  rgba(26, 35, 64, 0.80);
+  --panel-border:    rgba(74,158,255,0.22);
+  --panel-border-hl: rgba(74,158,255,0.55);
+  --panel-glow:      rgba(74,158,255,0.08);
+  --panel-blur:      16px;
+
+  /* Typography */
+  --font-display: 'Exo 2', 'Segoe UI', sans-serif;
+  --font-body:    'Inter', 'Segoe UI', sans-serif;
+  --font-mono:    'Share Tech Mono', 'Consolas', monospace;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* Radii */
+  --r-sm:   6px;
+  --r-md:   12px;
+  --r-lg:   20px;
+  --r-xl:   32px;
+  --r-pill: 9999px;
+
+  /* Transitions */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --t-fast:  120ms;
+  --t-mid:   250ms;
+  --t-slow:  400ms;
+  --t-enter: 600ms;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--space-black);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* ── Three.js Canvas ── */
+#game-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 0;
+  display: block;
+}
+
+/* ── UI Layer System ── */
+.ui-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity var(--t-mid) var(--ease-out), visibility var(--t-mid);
+}
+.ui-layer.visible {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+.ui-layer.visible * {
+  pointer-events: auto;
+}
+/* HUD specifically passes through clicks to the 3D canvas except on its buttons */
+#hud.visible {
+  pointer-events: none;
+}
+#hud.visible * {
+  pointer-events: none;
+}
+#hud.visible button,
+#hud.visible a,
+#hud.visible input,
+#hud.visible .hud-pause-btn,
+#hud.visible .hud-zoom-btn,
+#hud.visible .btn {
+  pointer-events: auto;
+}
+
+.ui-layer:not(.visible),
+.ui-layer:not(.visible) * {
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* ── Loading Screen ── */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--space-black);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-5);
+  transition: opacity var(--t-slow) var(--ease-out);
+}
+#loading-screen.fade-out { opacity: 0; pointer-events: none; }
+
+.loading-logo {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-indent: 0.16em;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--text-bright);
+  text-shadow: 0 0 40px var(--blue-bright), 0 0 80px var(--blue-dim);
+}
+.loading-sub {
+  font-family: var(--font-display);
+  font-size: clamp(0.75rem, 2vw, 1rem);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  text-align: center;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  opacity: 0.85;
+}
+.loading-bar-wrap {
+  width: min(320px, 60vw);
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.loading-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-mid), var(--blue-bright), var(--teal-bright));
+  border-radius: var(--r-pill);
+  width: 0%;
+  transition: width var(--t-mid) var(--ease-out);
+  box-shadow: 0 0 10px var(--blue-bright);
+}
+.loading-status {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+/* ── Shared Glass Panel ── */
+.glass-panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--r-lg);
+  backdrop-filter: blur(var(--panel-blur));
+  -webkit-backdrop-filter: blur(var(--panel-blur));
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+/* ── Shared Button Styles ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-5);
+  border: none;
+  border-radius: var(--r-md);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all var(--t-mid) var(--ease-out);
+  outline: none;
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background var(--t-fast);
+}
+.btn:hover::after { background: rgba(255,255,255,0.08); }
+.btn:active::after { background: rgba(255,255,255,0.15); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-mid), var(--blue-bright));
+  color: var(--text-bright);
+  box-shadow: 0 4px 20px var(--blue-glow);
+}
+.btn-primary:hover { box-shadow: 0 4px 30px rgba(74,158,255,0.6); transform: translateY(-1px); }
+
+.btn-secondary {
+  background: var(--panel-bg-light);
+  color: var(--text-primary);
+  border: 1px solid var(--panel-border);
+}
+.btn-secondary:hover { border-color: var(--blue-bright); color: var(--blue-bright); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.btn-ghost:hover { color: var(--text-primary); border-color: var(--panel-border-hl); }
+
+/* ── Resource Bar Base ── */
+.resource-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: var(--r-pill);
+  overflow: hidden;
+}
+.resource-bar-fill {
+  height: 100%;
+  border-radius: var(--r-pill);
+  transition: width 0.5s var(--ease-out), background-color var(--t-mid);
+}
+.resource-bar-fill.safe     { background: var(--status-safe); }
+.resource-bar-fill.warning  { background: var(--status-warning); animation: pulse-warning 1.5s ease-in-out infinite; }
+.resource-bar-fill.danger   { background: var(--status-danger); animation: pulse-warning 0.8s ease-in-out infinite; }
+.resource-bar-fill.critical { background: var(--status-critical); animation: pulse-critical 0.5s ease-in-out infinite; }
+
+/* ── Notification Toast ── */
+#ui-notification {
+  position: fixed;
+  top: 64px !important;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999 !important;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.notification-toast {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: toast-in var(--t-enter) var(--ease-out) forwards;
+  white-space: nowrap;
+}
+.notification-toast.info     { background: rgba(74,158,255,0.25); border: 1px solid var(--blue-bright); color: var(--blue-bright); }
+.notification-toast.warning  { background: rgba(255,179,71,0.25); border: 1px solid var(--status-warning); color: var(--status-warning); }
+.notification-toast.danger   { background: rgba(255,68,68,0.25); border: 1px solid var(--status-danger); color: var(--status-danger); }
+.notification-toast.success  { background: rgba(66,217,148,0.25); border: 1px solid var(--status-safe); color: var(--status-safe); }
+
+/* ── Interaction Prompt ── */
+#interaction-prompt {
+  position: fixed;
+  bottom: calc(var(--sp-8) + 20px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-mid) var(--ease-out);
+}
+#interaction-prompt.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.interaction-prompt-inner {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--panel-bg);
+  border: 1px solid var(--blue-bright);
+  border-radius: var(--r-pill);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 20px var(--blue-glow);
+  animation: float 2s ease-in-out infinite;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.interaction-prompt-inner:hover {
+  transform: scale(1.05);
+  background: rgba(0, 229, 255, 0.18);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+}
+.interaction-prompt-inner:active {
+  transform: scale(0.97);
+}
+.interaction-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  background: var(--blue-bright);
+  color: var(--space-black);
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.interaction-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+/* ── Keyframe Animations ── */
+@keyframes pulse-warning {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+@keyframes pulse-critical {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--status-critical); }
+  50% { opacity: 0.5; box-shadow: none; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes toast-in {
+  0% { opacity: 0; transform: translateY(-12px) scale(0.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--blue-glow); }
+  50% { box-shadow: 0 0 40px rgba(74,158,255,0.6); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--space-light); border-radius: 2px; }
+
+/* ── Focus / Accessibility ── */
+:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* ── Hidden utility ── */
+.hidden { display: none !important; }
+.invisible { visibility: hidden !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }

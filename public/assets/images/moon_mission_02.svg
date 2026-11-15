@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 340" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="60%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="thermalMap" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+      <stop offset="35%" stop-color="#06b6d4" stop-opacity="0.6"/>
+      <stop offset="65%" stop-color="#eab308" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#ef4444" stop-opacity="0.85"/>
+    </linearGradient>
+    <linearGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="30%" stop-color="#fef08a" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Space -->
+  <rect width="600" height="340" fill="url(#skyGrad2)"/>
+  <circle cx="90" cy="40" r="1.2" fill="#fff" opacity="0.8"/>
+  <circle cx="210" cy="50" r="1.5" fill="#e0e7ff" opacity="0.9"/>
+  <circle cx="380" cy="35" r="1" fill="#fff" opacity="0.7"/>
+  <circle cx="490" cy="60" r="1.6" fill="#fff" opacity="0.9"/>
+
+  <!-- Harsh Sun on Horizon -->
+  <circle cx="80" cy="130" r="70" fill="url(#sunGlow)"/>
+  <circle cx="80" cy="130" r="28" fill="#fff"/>
+
+  <!-- Montes Apenninus / Mountain Range -->
+  <polygon points="0,210 60,160 120,185 200,135 280,175 360,140 460,190 540,155 600,180 600,240 0,240" fill="#1e293b"/>
+  <!-- Bright sunlit mountain faces -->
+  <polygon points="60,160 120,185 90,190 50,175" fill="#94a3b8" opacity="0.8"/>
+  <polygon points="200,135 250,165 220,175 180,150" fill="#cbd5e1" opacity="0.9"/>
+  <polygon points="360,140 410,175 390,180 340,160" fill="#94a3b8" opacity="0.7"/>
+
+  <!-- Lunar Plains (Mare Imbrium) with Thermal Heatmap Grid -->
+  <polygon points="0,220 600,220 600,340 0,340" fill="#0f172a"/>
+
+  <!-- Thermal Spectrum Scan Grid Overlay -->
+  <g opacity="0.45">
+    <line x1="0" y1="240" x2="600" y2="240" stroke="#38bdf8" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="0" y1="265" x2="600" y2="265" stroke="#06b6d4" stroke-width="1" stroke-dasharray="6,4"/>
+    <line x1="0" y1="295" x2="600" y2="295" stroke="#f59e0b" stroke-width="1" stroke-dasharray="6,4"/>
+    <line x1="0" y1="325" x2="600" y2="325" stroke="#ef4444" stroke-width="1" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Thermal Scan Fan from Diviner Sensor -->
+  <polygon points="300,190 120,335 480,335" fill="url(#thermalMap)" opacity="0.35"/>
+
+  <!-- Science Station & Thermal Radiometer Mast -->
+  <g transform="translate(260, 160)">
+    <!-- Tripod / Platform -->
+    <line x1="40" y1="50" x2="20" y2="90" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="40" y1="50" x2="60" y2="90" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="40" y1="50" x2="40" y2="92" stroke="#94a3b8" stroke-width="3"/>
+    <!-- Sensor Pod -->
+    <rect x="25" y="35" width="30" height="18" rx="4" fill="#38bdf8" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="33" cy="44" r="3" fill="#ef4444"/>
+    <circle cx="47" cy="44" r="3" fill="#22c55e"/>
+    <!-- Radiator Panels -->
+    <line x1="10" y1="40" x2="25" y2="40" stroke="#e2e8f0" stroke-width="2"/>
+    <rect x="0" y="32" width="12" height="16" fill="#64748b" stroke="#cbd5e1" stroke-width="1"/>
+    <line x1="55" y1="40" x2="70" y2="40" stroke="#e2e8f0" stroke-width="2"/>
+    <rect x="68" y="32" width="12" height="16" fill="#64748b" stroke="#cbd5e1" stroke-width="1"/>
+  </g>
+
+  <!-- Astronaut taking Core Samples on the left -->
+  <g transform="translate(140, 210)">
+    <line x1="10" y1="45" x2="10" y2="65" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+    <line x1="22" y1="45" x2="26" y2="65" stroke="#e2e8f0" stroke-width="6" stroke-linecap="round"/>
+    <rect x="6" y="20" width="20" height="26" rx="5" fill="#f8fafc" stroke="#94a3b8" stroke-width="1.5"/>
+    <circle cx="16" cy="12" r="9" fill="#f8fafc"/>
+    <ellipse cx="18" cy="12" rx="6" ry="5" fill="#f59e0b"/>
+    <!-- Hand drill into surface -->
+    <line x1="24" y1="32" x2="35" y2="58" stroke="#38bdf8" stroke-width="2.5"/>
+    <circle cx="35" cy="58" r="2" fill="#fff"/>
+  </g>
+
+  <!-- Rover on Right with Thermal Radiator Wings -->
+  <g transform="translate(430, 225)">
+    <ellipse cx="18" cy="50" rx="12" ry="10" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <ellipse cx="72" cy="50" rx="12" ry="10" fill="#1e293b" stroke="#64748b" stroke-width="1.5"/>
+    <rect x="12" y="30" width="66" height="15" rx="4" fill="#e2e8f0"/>
+    <rect x="25" y="16" width="38" height="16" rx="3" fill="#0284c7"/>
+    <!-- Heat sink fin -->
+    <polygon points="50,16 65,4 72,16" fill="#38bdf8" opacity="0.9"/>
+  </g>
+
+  <!-- HUD Overlay Graphics -->
+  <rect x="15" y="15" width="250" height="28" rx="6" fill="#0f172a" fill-opacity="0.8" stroke="#f59e0b" stroke-width="1"/>
+  <circle cx="28" cy="29" r="4" fill="#f59e0b"/>
+  <text x="38" y="33" fill="#f8fafc" font-family="-apple-system, sans-serif" font-weight="700" font-size="11">DIVINER THERMAL GRADIENT • GCP MAP</text>
+
+  <!-- Thermal Scale Bar -->
+  <g transform="translate(390, 15)">
+    <rect width="195" height="28" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#38bdf8" stroke-width="1"/>
+    <rect x="10" y="9" width="175" height="10" rx="3" fill="url(#thermalMap)"/>
+    <text x="12" y="27" fill="#67e8f9" font-family="monospace" font-size="8">-180°C (Cold Trap)</text>
+    <text x="140" y="27" fill="#ef4444" font-family="monospace" font-size="8">+120°C (Sunlit)</text>
+  </g>
+
+  <rect x="15" y="295" width="200" height="30" rx="6" fill="#0f172a" fill-opacity="0.85" stroke="#38bdf8" stroke-width="1"/>
+  <text x="115" y="314" fill="#38bdf8" font-family="monospace" font-weight="700" font-size="11" text-anchor="middle">ROCK ABUNDANCE: 0.14</text>
+</svg>
