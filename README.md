@@ -4,7 +4,7 @@
 **NASA Space Apps Challenge Submission**  
 **Track:** Interactive Educational Technology & Deep Space Mission Planning  
 **Team Name:** M²  
-**Live Application URL:** https://spaceapps-frontier-mission-academy.web.app *(or your deployed public URL)*  
+**Live Application URL:** https://m-stronaut.vercel.app
 **Public Code Repository:** https://github.com/MadihaDar/m-stronaut 
 **Demo Presentation / Video:** https://www.spaceappschallenge.org *(Public 30s Video or 7-Slide Presentation)*  
 
